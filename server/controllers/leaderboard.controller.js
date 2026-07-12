@@ -1,0 +1,55 @@
+import { User } from "../models/user.model.js";
+import { Community } from "../models/community.model.js";
+
+// 1. Get Top Users Globally
+export const getGlobalPlanters = async (req, res) => {
+    try {
+        const topPlanters = await User.find()
+            .select("username avatar globalPoints")
+            .sort({ globalPoints: -1 }) // Sort by highest global points first
+            .limit(10); // Limit to top 10 for performance
+
+        return res.status(200).json({
+            success: true,
+            data: topPlanters
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Failed to load global leaderboard", error: error.message });
+    }
+};
+
+// 2. Get Top Communities
+export const getTopCommunities = async (req, res) => {
+    try {
+        const topCommunities = await Community.find()
+            .select("name totalPoints")
+            .sort({ totalPoints: -1 }) // Sort by highest total community points
+            .limit(10);
+
+        return res.status(200).json({
+            success: true,
+            data: topCommunities
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Failed to load communities leaderboard", error: error.message });
+    }
+};
+
+// 3. Get Top Users in a Specific Community
+export const getLocalLeaderboard = async (req, res) => {
+    try {
+        const { communityId } = req.params;
+
+        const localPlanters = await User.find({ community: communityId })
+            .select("username avatar localPoints")
+            .sort({ localPoints: -1 }) // Sort by local points
+            .limit(10);
+
+        return res.status(200).json({
+            success: true,
+            data: localPlanters
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Failed to load local leaderboard", error: error.message });
+    }
+};
