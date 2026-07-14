@@ -3,6 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Users, UserPlus, UserMinus, Trophy } from "lucide-react";
 import API_BASE_URL from "../api/api.js";
 
+const resolveAvatarUrl = (avatar, username) => {
+    if (!avatar) {
+        return `https://api.dicebear.com/7.x/initials/svg?seed=${username || 'User'}`;
+    }
+    return avatar.startsWith("http") ? avatar : `${API_BASE_URL}${avatar}`;
+};
+
 function Friends() {
     const [activeTab, setActiveTab] = useState("following");
     const [following, setFollowing] = useState([]);
@@ -136,17 +143,11 @@ function Friends() {
                                             className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md"
                                         >
                                             <div className="flex items-center gap-3">
-                                                {person.avatar ? (
-                                                    <img
-                                                        src={person.avatar}
-                                                        alt={person.username}
-                                                        className="h-12 w-12 rounded-full object-cover"
-                                                    />
-                                                ) : (
-                                                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-lg font-bold text-emerald-600">
-                                                        {person.username[0]?.toUpperCase()}
-                                                    </div>
-                                                )}
+                                                <img
+                                                    src={resolveAvatarUrl(person.avatar, person.username)}
+                                                    alt={person.username}
+                                                    className="h-12 w-12 rounded-full object-cover border border-slate-100 shadow-sm"
+                                                />
                                                 <div>
                                                     <h3 className="font-bold text-slate-950">
                                                         {person.username}
@@ -213,17 +214,11 @@ function Friends() {
                                         className="flex items-center justify-between py-2 border-b border-slate-100 last:border-0"
                                     >
                                         <div className="flex items-center gap-2.5">
-                                            {person.avatar ? (
                                                 <img
-                                                    src={person.avatar}
+                                                    src={resolveAvatarUrl(person.avatar, person.username)}
                                                     alt={person.username}
-                                                    className="h-9 w-9 rounded-full object-cover"
+                                                    className="h-9 w-9 rounded-full object-cover border border-slate-100 shadow-sm"
                                                 />
-                                            ) : (
-                                                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 text-sm font-bold text-emerald-600">
-                                                    {person.username[0]?.toUpperCase()}
-                                                </div>
-                                            )}
                                             <div>
                                                 <h4 className="text-sm font-bold text-slate-950">
                                                     {person.username}

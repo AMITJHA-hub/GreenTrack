@@ -25,15 +25,60 @@ app.use(
 const PORT = process.env.PORT || 3000;
 
 
-connectDB().then(() => {
+connectDB().then(async () => {
+    // Run database scores synchronization to self-correct any retrofitted community stats
+    try {
+        const { Community } = await import("./models/community.model.js");
+        const { User } = await import("./models/user.model.js");
+        const Tree = (await import("./models/tree.model.js")).default;
+        const { Post } = await import("./models/post.model.js");
+
+        console.log("Synchronizing database community scores...");
+
+        // 1. Sync communities totalPoints based on all trees and posts inside that community
+        const communities = await Community.find();
+        for (const comm of communities) {
+            const treeCount = await Tree.countDocuments({ community: comm._id });
+            const postCount = await Post.countDocuments({ community: comm._id });
+            comm.totalPoints = (treeCount * 100) + (postCount * 50);
+            await comm.save();
+        }
+
+        // 2. Sync users localPoints to match globalPoints if they are assigned to a community
+        const users = await User.find();
+        const { getOrCreateCommunityByCoordinates } = await import("./utils/geocoding.js");
+        for (const user of users) {
+            const treeCount = await Tree.countDocuments({ owner: user._id });
+            const postCount = await Post.countDocuments({ author: user._id });
+            
+            // Auto-resolve user community to match their latest planted tree
+            const latestTree = await Tree.findOne({ owner: user._id }).sort({ createdAt: -1 });
+            if (latestTree) {
+                const containingCommunity = await getOrCreateCommunityByCoordinates(
+                    latestTree.location.coordinates[1],
+                    latestTree.location.coordinates[0]
+                );
+                user.community = containingCommunity._id;
+            }
+
+            user.globalPoints = (treeCount * 100) + (postCount * 50);
+            user.localPoints = user.community ? user.globalPoints : 0;
+            await user.save({ validateBeforeSave: false });
+        }
+
+        console.log("Database scores synchronized successfully!");
+    } catch (err) {
+        console.error("Failed to synchronize database scores:", err);
+    }
+
     app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`);
-    })
+    });
 })
     .catch((error) => {
         console.log("Database connection failed", error);
         process.exit(1);
-    })
+    });
 
 app.get('/', (req, res) => {
     res.send('Express server running with ES Modules and CORS enabled.');

@@ -32,7 +32,7 @@ export const createPost = async (req, res) => {
 
         // Award points for post creation (50 points)
         await User.findByIdAndUpdate(authorId, {
-            $inc: { globalPoints: 50 }
+            $inc: { globalPoints: 50, localPoints: communityId ? 50 : 0 }
         });
         if (communityId) {
             await Community.findByIdAndUpdate(communityId, {
@@ -68,7 +68,7 @@ export const toggleLikePost = async (req, res) => {
         // Award or deduct points for likes (5 points)
         const pointsDiff = hasLiked ? -5 : 5;
         await User.findByIdAndUpdate(userId, {
-            $inc: { globalPoints: pointsDiff }
+            $inc: { globalPoints: pointsDiff, localPoints: req.user.community ? pointsDiff : 0 }
         });
         if (post.community) {
             await Community.findByIdAndUpdate(post.community, {
@@ -126,7 +126,7 @@ export const addComment = async (req, res) => {
 
         // Award points for commenting (20 points)
         await User.findByIdAndUpdate(authorId, {
-            $inc: { globalPoints: 20 }
+            $inc: { globalPoints: 20, localPoints: req.user.community ? 20 : 0 }
         });
         if (updatedPost.community) {
             await Community.findByIdAndUpdate(updatedPost.community, {
@@ -215,8 +215,12 @@ export const deletePost = async (req, res) => {
         }
 
         // 1. Deduct points from post creator (50 points)
+        const authorUser = await User.findById(post.author);
         await User.findByIdAndUpdate(post.author, {
-            $inc: { globalPoints: -50 }
+            $inc: { 
+                globalPoints: -50,
+                localPoints: (authorUser && authorUser.community) ? -50 : 0
+            }
         });
 
         // 2. Deduct points from users who liked the post (5 points each)
@@ -224,6 +228,10 @@ export const deletePost = async (req, res) => {
             await User.updateMany(
                 { _id: { $in: post.likes } },
                 { $inc: { globalPoints: -5 } }
+            );
+            await User.updateMany(
+                { _id: { $in: post.likes }, community: { $ne: null } },
+                { $inc: { localPoints: -5 } }
             );
         }
 
@@ -237,8 +245,12 @@ export const deletePost = async (req, res) => {
                 }
             }
             for (const [authorId, count] of Object.entries(commentCountsByAuthor)) {
+                const commenter = await User.findById(authorId);
                 await User.findByIdAndUpdate(authorId, {
-                    $inc: { globalPoints: -(20 * count) }
+                    $inc: { 
+                        globalPoints: -(20 * count),
+                        localPoints: (commenter && commenter.community) ? -(20 * count) : 0
+                    }
                 });
             }
         }

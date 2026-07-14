@@ -2,6 +2,9 @@ import { User } from "../models/user.model.js";
 import { OAuth2Client } from "google-auth-library";
 import Tree from "../models/tree.model.js";
 import { Post } from "../models/post.model.js";
+import { getOrCreateCommunityByCoordinates } from "../utils/geocoding.js";
+import fs from "fs";
+import path from "path";
 
 const googleClient = new OAuth2Client(
     process.env.GOOGLE_CLIENT_ID
@@ -205,29 +208,12 @@ export const getCurrentUser = async (req, res) => {
             if (userTree) {
                 let matchedComm = userTree.community;
                 if (!matchedComm) {
-                    const geoMatchedComm = await Community.findOne({
-                        boundary: {
-                            $geoIntersects: {
-                                $geometry: {
-                                    type: "Point",
-                                    coordinates: userTree.location.coordinates,
-                                },
-                            },
-                        },
-                    });
-                    
-                    if (geoMatchedComm) {
-                        matchedComm = geoMatchedComm._id;
-                    } else {
-                        const fallbackComm = await Community.findOne();
-                        if (fallbackComm) {
-                            matchedComm = fallbackComm._id;
-                        }
-                    }
-                    
-                    if (matchedComm) {
-                        await Tree.updateMany({ owner: userId }, { $set: { community: matchedComm } });
-                    }
+                    const dynamicComm = await getOrCreateCommunityByCoordinates(
+                        userTree.location.coordinates[1],
+                        userTree.location.coordinates[0]
+                    );
+                    matchedComm = dynamicComm._id;
+                    await Tree.updateMany({ owner: userId }, { $set: { community: matchedComm } });
                 }
                 if (matchedComm) {
                     await User.findByIdAndUpdate(userId, { $set: { community: matchedComm } });
@@ -351,5 +337,46 @@ export const getSuggestions = async (req, res) => {
         });
     } catch (error) {
         return res.status(500).json({ message: error.message });
+    }
+};
+
+export const updateAvatar = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const file = req.file;
+
+        if (!file) {
+            return res.status(400).json({ message: "Please upload an avatar image file." });
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        // Delete old avatar file if it exists and is local (i.e. starts with /uploads/)
+        if (user.avatar && user.avatar.startsWith("/uploads/")) {
+            const filename = user.avatar.replace("/uploads/", "");
+            const filePath = path.join(process.cwd(), "uploads", filename);
+            fs.unlink(filePath, (err) => {
+                if (err) console.error("Error deleting old avatar file:", err);
+            });
+        }
+
+        user.avatar = `/uploads/${file.filename}`;
+        await user.save();
+
+        // Populate community and other details
+        const updatedUser = await User.findById(userId)
+            .populate("community", "name border");
+
+        return res.status(200).json({
+            success: true,
+            message: "Profile picture updated successfully.",
+            user: updatedUser
+        });
+
+    } catch (error) {
+        return res.status(500).json({ message: "Failed to update profile picture.", error: error.message });
     }
 };

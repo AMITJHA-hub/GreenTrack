@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import API_BASE_URL from "../api/api.js";
 import {
@@ -11,12 +11,53 @@ import {
     Activity
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import CropModal from "../components/CropModal.jsx";
+
+const resolveAvatarUrl = (avatar, username) => {
+    if (!avatar) {
+        return `https://api.dicebear.com/7.x/initials/svg?seed=${username || 'User'}`;
+    }
+    return avatar.startsWith("http") ? avatar : `${API_BASE_URL}${avatar}`;
+};
 
 function Profile() {
-    const { user } = useAuth();
+    const { user, setUser, logout } = useAuth();
     const navigate = useNavigate();
     const [trees, setTrees] = useState([]);
     const [loadingTrees, setLoadingTrees] = useState(true);
+    const avatarInputRef = useRef(null);
+    const [cropImageUrl, setCropImageUrl] = useState("");
+    const [isCropModalOpen, setIsCropModalOpen] = useState(false);
+
+    const handleAvatarChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        setCropImageUrl(URL.createObjectURL(file));
+        setIsCropModalOpen(true);
+    };
+
+    const uploadCroppedAvatar = async (croppedBlob) => {
+        const formData = new FormData();
+        formData.append("avatar", croppedBlob, "avatar.jpg");
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/users/update-avatar`, {
+                method: "POST",
+                body: formData,
+                credentials: "include"
+            });
+            const data = await response.json();
+            if (data.success) {
+                setUser(data.user);
+                setIsCropModalOpen(false);
+            } else {
+                alert(data.message || "Failed to update profile picture.");
+            }
+        } catch (error) {
+            console.error("Error updating avatar:", error);
+            alert("An error occurred during upload.");
+        }
+    };
 
     useEffect(() => {
         async function fetchUserTrees() {
@@ -54,9 +95,29 @@ function Profile() {
                     <div className="h-48 bg-gradient-to-r from-emerald-500 to-teal-600" />
                     
                     <div className="px-6 pb-8 sm:px-8">
-                        {/* Avatar */}
-                        <div className="relative -mt-16 flex h-28 w-28 items-center justify-center rounded-3xl border-4 border-white bg-slate-950 text-4xl text-white shadow-xl">
-                            {user?.username?.slice(0, 2).toUpperCase() || "👤"}
+                        {/* Hidden file input */}
+                        <input
+                            type="file"
+                            ref={avatarInputRef}
+                            onChange={handleAvatarChange}
+                            accept="image/*"
+                            className="hidden"
+                        />
+
+                        {/* Interactive Avatar */}
+                        <div 
+                            onClick={() => avatarInputRef.current && avatarInputRef.current.click()}
+                            className="group relative -mt-28 flex h-44 w-44 cursor-pointer items-center justify-center overflow-hidden rounded-[2.75rem] border-4 border-white bg-slate-950 text-4xl text-white shadow-2xl transition-transform hover:scale-105"
+                        >
+                            <img 
+                                src={resolveAvatarUrl(user?.avatar, user?.username)} 
+                                alt={user?.username} 
+                                className="h-full w-full object-cover" 
+                            />
+                            {/* Hover Overlay */}
+                            <div className="absolute inset-0 flex items-center justify-center bg-slate-950/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span className="text-xs font-black tracking-widest uppercase text-white">Change</span>
+                            </div>
                         </div>
 
                         <div className="mt-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
@@ -74,12 +135,20 @@ function Profile() {
                             </div>
 
                             {/* Main CTA */}
-                            <button
-                                onClick={() => navigate("/feed")}
-                                className="rounded-2xl bg-emerald-500 px-6 py-3 text-sm font-black text-white hover:bg-emerald-600 transition shadow-lg shadow-emerald-100 shrink-0"
-                            >
-                                Share Update
-                            </button>
+                            <div className="flex items-center gap-3 shrink-0">
+                                <button
+                                    onClick={() => navigate("/feed")}
+                                    className="rounded-2xl bg-emerald-500 px-6 py-3.5 text-xs font-black tracking-wider text-white hover:bg-emerald-600 transition shadow-lg shadow-emerald-100"
+                                >
+                                    SHARE UPDATE
+                                </button>
+                                <button
+                                    onClick={logout}
+                                    className="rounded-2xl bg-red-50 border border-red-100 hover:bg-red-100/50 hover:border-red-200 px-6 py-3.5 text-xs font-black tracking-wider text-red-600 transition shadow-sm"
+                                >
+                                    LOGOUT
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -247,6 +316,16 @@ function Profile() {
                     )}
                 </div>
 
+            {isCropModalOpen && (
+                <CropModal
+                    imageUrl={cropImageUrl}
+                    onClose={() => {
+                        setIsCropModalOpen(false);
+                        if (cropImageUrl) URL.revokeObjectURL(cropImageUrl);
+                    }}
+                    onSave={uploadCroppedAvatar}
+                />
+            )}
             </div>
         </main>
     );

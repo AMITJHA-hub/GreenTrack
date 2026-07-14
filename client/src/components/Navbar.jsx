@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import API_BASE_URL from "../api/api.js";
 import {
     Trees,
     LayoutDashboard,
@@ -13,26 +14,33 @@ import {
     X,
 } from "lucide-react";
 
+const resolveAvatarUrl = (avatar, username) => {
+    if (!avatar) {
+        return `https://api.dicebear.com/7.x/initials/svg?seed=${username || 'User'}`;
+    }
+    return avatar.startsWith("http") ? avatar : `${API_BASE_URL}${avatar}`;
+};
+
 function Navbar() {
     const { user, authLoading } = useAuth();
     const [menuOpen, setMenuOpen] = useState(false);
 
     const linkStyle = ({ isActive }) =>
         isActive
-            ? "flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2 font-semibold text-green-700"
-            : "flex items-center gap-2 font-medium text-gray-600";
+            ? "flex items-center gap-3 rounded-2xl border border-emerald-250 bg-emerald-50 px-4.5 py-2.5 font-bold text-green-700 text-base"
+            : "flex items-center gap-3 px-3 py-2.5 text-base font-bold text-slate-600 hover:text-emerald-600 transition";
     return (
-        <nav className="sticky top-0 z-50 border-b bg-white">
+        <nav className="fixed top-0 left-0 right-0 z-50 border-b bg-white">
 
-            <div className="flex h-20 items-center justify-between px-4 sm:px-6 lg:px-10">
+            <div className="flex h-24 items-center justify-between px-4 sm:px-6 lg:px-10">
 
                 {/* Logo */}
                 <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500 text-white sm:h-12 sm:w-12">
-                        <Trees size={22} />
+                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500 text-white sm:h-14 sm:w-14">
+                        <Trees size={26} />
                     </div>
 
-                    <span className="text-xl font-bold text-emerald-700 sm:text-2xl">
+                    <span className="text-2xl font-black text-emerald-700 sm:text-3xl">
                         GreenTrack
                     </span>
                 </div>
@@ -71,15 +79,19 @@ function Navbar() {
                 </div>
 
                 {/* Desktop Profile */}
-                <div className="hidden items-center gap-4 lg:flex text-sm">
-                    <span className="font-semibold text-emerald-600 bg-emerald-50 border border-emerald-100 px-3.5 py-1.5 rounded-full">
-                        Points: {user?.globalPoints ?? 0}
+                <div className="hidden items-center gap-5 lg:flex text-base">
+                    <span className="font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-4.5 py-2 rounded-full">
+                        🏆 {user?.globalPoints ?? 0} Points
                     </span>
 
-                    <Link to="/profile" className="flex items-center gap-2 font-semibold text-slate-700 hover:text-emerald-600 transition">
-                        <UserRound size={20} className="text-slate-400" />
+                    <Link to="/profile" className="flex items-center gap-3.5 text-lg font-black text-slate-800 hover:text-emerald-600 transition">
+                        <img 
+                            src={resolveAvatarUrl(user?.avatar, user?.username)} 
+                            alt={user?.username} 
+                            className="h-14 w-14 rounded-full object-cover border-2 border-emerald-300 shadow shadow-emerald-100 transition hover:scale-105" 
+                        />
 
-                        <span>
+                        <span className="truncate max-w-[150px]">
                             {authLoading
                                 ? "Loading..."
                                 : user?.username || "Profile"}
@@ -166,7 +178,11 @@ function Navbar() {
                                 onClick={() => setMenuOpen(false)}
                                 className="flex items-center gap-2 font-semibold text-gray-700 text-xs hover:text-emerald-600 transition"
                             >
-                                <UserRound size={18} />
+                                <img 
+                                    src={resolveAvatarUrl(user?.avatar, user?.username)} 
+                                    alt={user?.username} 
+                                    className="h-5 w-5 rounded-full object-cover border border-slate-200" 
+                                />
                                 <span>
                                     {authLoading
                                         ? "Loading..."

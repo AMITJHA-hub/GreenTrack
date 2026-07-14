@@ -39,10 +39,7 @@ function Dashboard() {
         month: "long",
         day: "numeric",
     });
-
-    // Personalized message
     let motivation = "";
-
     if ((user?.globalPoints ?? 0) < 100) {
         motivation =
             "Every tree begins with a single step. Start your green journey today!";
@@ -120,10 +117,6 @@ function Dashboard() {
                                 <span>
                                     🌱 {user?.treeCount ?? 0} {user?.treeCount === 1 ? "Tree" : "Trees"}
                                 </span>
-
-                                <span>
-                                    ✅ {user?.postCount ?? 0} {user?.postCount === 1 ? "Verified Post" : "Verified Posts"}
-                                </span>
                             </div>
 
                             {/* XP Progress */}
@@ -132,11 +125,11 @@ function Dashboard() {
                                 <div className="flex items-center justify-between gap-4">
 
                                     <span className="text-xs font-black tracking-wider text-slate-400">
-                                        LEVEL 1 GUARDIAN
+                                        LEVEL {Math.floor((user?.globalPoints || 0) / 100) + 1} GUARDIAN
                                     </span>
 
                                     <span className="text-xs font-black text-slate-400">
-                                        0 / 100 XP
+                                        {(user?.globalPoints || 0) % 100} / 100 XP
                                     </span>
 
                                 </div>
@@ -145,7 +138,7 @@ function Dashboard() {
 
                                     <div
                                         className="h-full rounded-full bg-emerald-500"
-                                        style={{ width: "0%" }}
+                                        style={{ width: `${(user?.globalPoints || 0) % 100}%` }}
                                     />
 
                                 </div>
@@ -168,7 +161,7 @@ function Dashboard() {
                 </section>
 
                 {/* STATISTICS */}
-                <section className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                <section className="mt-8 grid gap-6 md:grid-cols-2">
 
                     {/* Total Points */}
                     <article className="flex min-h-72 flex-col rounded-3xl border border-slate-200 bg-white p-7 shadow-sm sm:p-8">
@@ -207,7 +200,7 @@ function Dashboard() {
                     </article>
 
                     {/* Trees Planted */}
-                    <article className="flex min-h-72 flex-col rounded-3xl border border-emerald-200 bg-white p-7 shadow-sm sm:p-8">
+                    <article className="flex min-h-72 flex-col rounded-3xl border border-emerald-250 bg-white p-7 shadow-sm sm:p-8">
 
                         <div className="flex items-start justify-between">
 
@@ -240,39 +233,6 @@ function Dashboard() {
                             MY GARDEN
                             <ArrowRight size={18} />
                         </button>
-                    </article>
-
-                    {/* Verified Posts */}
-                    <article className="flex min-h-72 flex-col rounded-3xl border border-slate-200 bg-white p-7 shadow-sm sm:p-8 md:col-span-2 xl:col-span-1">
-
-                        <div className="flex items-start justify-between">
-
-                            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-50 text-orange-600">
-                                <CircleCheck size={30} />
-                            </div>
-
-                            <span className="text-xs font-black tracking-wider text-slate-300">
-                                PROOF
-                            </span>
-
-                        </div>
-
-                        <div className="mt-8">
-
-                            <p className="text-sm font-black tracking-wider text-slate-400">
-                                VERIFIED POSTS
-                            </p>
-
-                            <p className="mt-3 text-5xl font-black text-slate-950">
-                                {user?.postCount ?? 0}
-                            </p>
-
-                        </div>
-
-                        <p className="mt-auto pt-8 text-sm font-black tracking-wider text-slate-400">
-                            KEEP PROTECTING!
-                        </p>
-
                     </article>
 
                 </section>

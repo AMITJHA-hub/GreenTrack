@@ -3,6 +3,13 @@ import { useState, useEffect } from "react";
 import API_BASE_URL from "../api/api.js";
 import { useAuth } from "../context/AuthContext.jsx";
 
+const resolveAvatarUrl = (avatar, username) => {
+    if (!avatar) {
+        return `https://api.dicebear.com/7.x/initials/svg?seed=${username || 'User'}`;
+    }
+    return avatar.startsWith("http") ? avatar : `${API_BASE_URL}${avatar}`;
+};
+
 function Rankings() {
     const [activeTab, setActiveTab] = useState("planters");
     const [planters, setPlanters] = useState([]);
@@ -130,8 +137,14 @@ function Rankings() {
                         {topThree[1] && (
                             <div className="flex flex-col items-center flex-1">
                                 <div className="relative mb-3">
-                                    <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-slate-300 bg-white font-black text-slate-700 shadow-md">
-                                        {activeTab === "communities" ? "👥" : (topThree[1].username?.slice(0, 2).toUpperCase() || "👤")}
+                                    <div className="flex h-16 w-16 overflow-hidden items-center justify-center rounded-full border-4 border-slate-300 bg-white font-black text-slate-700 shadow-md">
+                                        {activeTab === "communities" ? "👥" : (
+                                            <img 
+                                                src={resolveAvatarUrl(topThree[1].avatar, topThree[1].username)} 
+                                                alt={topThree[1].username} 
+                                                className="h-full w-full object-cover" 
+                                            />
+                                        )}
                                     </div>
                                     <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-slate-200 px-2.5 py-0.5 text-[9px] font-black text-slate-800 shadow">
                                         🥈 2nd
@@ -155,8 +168,14 @@ function Rankings() {
                             <div className="flex flex-col items-center flex-1">
                                 <div className="relative mb-4 scale-110">
                                     <span className="absolute -top-7 left-1/2 -translate-x-1/2 text-2xl animate-bounce">👑</span>
-                                    <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-amber-400 bg-white font-black text-amber-600 shadow-lg">
-                                        {activeTab === "communities" ? "👥" : (topThree[0].username?.slice(0, 2).toUpperCase() || "👤")}
+                                    <div className="flex h-20 w-20 overflow-hidden items-center justify-center rounded-full border-4 border-amber-400 bg-white font-black text-amber-600 shadow-lg">
+                                        {activeTab === "communities" ? "👥" : (
+                                            <img 
+                                                src={resolveAvatarUrl(topThree[0].avatar, topThree[0].username)} 
+                                                alt={topThree[0].username} 
+                                                className="h-full w-full object-cover" 
+                                            />
+                                        )}
                                     </div>
                                     <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-amber-400 px-2.5 py-0.5 text-[9px] font-black text-amber-950 shadow">
                                         🥇 1st
@@ -179,8 +198,14 @@ function Rankings() {
                         {topThree[2] && (
                             <div className="flex flex-col items-center flex-1">
                                 <div className="relative mb-3">
-                                    <div className="flex h-14 w-14 items-center justify-center rounded-full border-4 border-amber-600 bg-white font-black text-amber-900 shadow-md">
-                                        {activeTab === "communities" ? "👥" : (topThree[2].username?.slice(0, 2).toUpperCase() || "👤")}
+                                    <div className="flex h-14 w-14 overflow-hidden items-center justify-center rounded-full border-4 border-amber-600 bg-white font-black text-amber-900 shadow-md">
+                                        {activeTab === "communities" ? "👥" : (
+                                            <img 
+                                                src={resolveAvatarUrl(topThree[2].avatar, topThree[2].username)} 
+                                                alt={topThree[2].username} 
+                                                className="h-full w-full object-cover" 
+                                            />
+                                        )}
                                     </div>
                                     <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-amber-600 px-2.5 py-0.5 text-[9px] font-black text-white shadow">
                                         🥉 3rd
@@ -227,8 +252,12 @@ function Rankings() {
 
                                             <div className="flex items-center gap-3">
                                                 {activeTab !== "communities" && (
-                                                    <div className="h-9 w-9 bg-slate-900 text-white rounded-full flex items-center justify-center font-bold text-xs shrink-0">
-                                                        {item.username?.slice(0, 2).toUpperCase() || "👤"}
+                                                    <div className="h-9 w-9 overflow-hidden bg-slate-900 text-white rounded-full flex items-center justify-center font-bold text-xs shrink-0">
+                                                        <img 
+                                                            src={resolveAvatarUrl(item.avatar, item.username)} 
+                                                            alt={item.username} 
+                                                            className="h-full w-full object-cover" 
+                                                        />
                                                     </div>
                                                 )}
                                                 <div>

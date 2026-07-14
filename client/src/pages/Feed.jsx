@@ -18,6 +18,13 @@ import {
 } from "lucide-react";
 import { useEffect } from "react"; // make sure to import useEffect at the top
 import API_BASE_URL from "../api/api.js";
+
+const resolveAvatarUrl = (avatar, username) => {
+    if (!avatar) {
+        return `https://api.dicebear.com/7.x/initials/svg?seed=${username || 'User'}`;
+    }
+    return avatar.startsWith("http") ? avatar : `${API_BASE_URL}${avatar}`;
+};
 import { useAuth } from "../context/AuthContext.jsx";
 
 
@@ -259,8 +266,12 @@ function Feed() {
 
                         <div className="px-6 pb-6">
 
-                            <div className="-mt-10 flex h-20 w-20 items-center justify-center rounded-2xl border-4 border-white bg-slate-950 text-2xl text-white shadow-lg">
-                                👤
+                            <div className="-mt-10 flex h-20 w-20 overflow-hidden items-center justify-center rounded-2xl border-4 border-white bg-slate-950 text-2xl text-white shadow-lg">
+                                <img 
+                                    src={resolveAvatarUrl(user?.avatar, user?.username)} 
+                                    alt={user?.username} 
+                                    className="h-full w-full object-cover" 
+                                />
                             </div>
 
                             <h2 className="mt-5 text-xl font-black text-slate-950">
@@ -422,8 +433,12 @@ function Feed() {
                                     {/* Author Profile */}
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-3">
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 text-white font-black text-sm">
-                                                {post.author?.username?.slice(0, 2).toUpperCase() || "👤"}
+                                            <div className="flex h-10 w-10 overflow-hidden items-center justify-center rounded-full bg-slate-950 text-white font-black text-sm">
+                                                <img 
+                                                    src={resolveAvatarUrl(post.author?.avatar, post.author?.username)} 
+                                                    alt={post.author?.username} 
+                                                    className="h-full w-full object-cover" 
+                                                />
                                             </div>
                                             <div>
                                                 <h4 className="font-black text-slate-950">
@@ -495,8 +510,12 @@ function Feed() {
                                                 <div className="space-y-3 max-h-60 overflow-y-auto pr-2">
                                                     {post.comments.map((comment) => (
                                                         <div key={comment._id} className="flex items-start gap-3 text-sm">
-                                                            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-200 font-bold text-[10px] text-slate-700 shrink-0">
-                                                                {comment.author?.username?.slice(0, 2).toUpperCase() || "👤"}
+                                                            <div className="flex h-7 w-7 overflow-hidden items-center justify-center rounded-full bg-slate-200 font-bold text-[10px] text-slate-700 shrink-0">
+                                                                <img 
+                                                                    src={resolveAvatarUrl(comment.author?.avatar, comment.author?.username)} 
+                                                                    alt={comment.author?.username} 
+                                                                    className="h-full w-full object-cover" 
+                                                                />
                                                             </div>
                                                             <div className="flex-1 rounded-2xl bg-slate-50 px-4 py-2">
                                                                 <div className="flex items-center justify-between">

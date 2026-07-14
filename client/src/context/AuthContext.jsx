@@ -4,8 +4,37 @@ import API_BASE_URL from "../api/api.js";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-    const [user, setUser] = useState(null);
-    const [authLoading, setAuthLoading] = useState(true);
+    const [user, setUser] = useState(() => {
+        const stored = localStorage.getItem("gt_user");
+        try {
+            return stored ? JSON.parse(stored) : null;
+        } catch {
+            return null;
+        }
+    });
+    const [authLoading, setAuthLoading] = useState(() => !localStorage.getItem("gt_user"));
+
+    const updateLocalUser = (newUser) => {
+        setUser(newUser);
+        if (newUser) {
+            localStorage.setItem("gt_user", JSON.stringify(newUser));
+        } else {
+            localStorage.removeItem("gt_user");
+        }
+    };
+
+    const logout = async () => {
+        try {
+            await fetch(`${API_BASE_URL}/users/logout`, {
+                method: "POST",
+                credentials: "include",
+            });
+        } catch (error) {
+            console.error("Logout API error:", error);
+        } finally {
+            updateLocalUser(null);
+        }
+    };
 
     useEffect(() => {
         async function getCurrentUser() {
@@ -19,16 +48,18 @@ export function AuthProvider({ children }) {
                 );
 
                 if (!response.ok) {
-                    setUser(null);
+                    updateLocalUser(null);
                     return;
                 }
 
                 const data = await response.json();
-
-                setUser(data.user);
+                updateLocalUser(data.user);
             } catch (error) {
                 console.error("Failed to get current user:", error);
-                setUser(null);
+                // Only log out on explicit unauthorized responses, not offline network errors
+                if (error.message && (error.message.includes("401") || error.message.includes("403"))) {
+                    updateLocalUser(null);
+                }
             } finally {
                 setAuthLoading(false);
             }
@@ -41,7 +72,8 @@ export function AuthProvider({ children }) {
         <AuthContext.Provider
             value={{
                 user,
-                setUser,
+                setUser: updateLocalUser,
+                logout,
                 authLoading,
             }}
         >

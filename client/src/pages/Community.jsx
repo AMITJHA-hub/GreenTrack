@@ -9,8 +9,10 @@ import {
     Send,
 } from "lucide-react";
 import API_BASE_URL from "../api/api.js";
+import { useAuth } from "../context/AuthContext.jsx";
 
 function Community() {
+    const { setUser } = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [updateText, setUpdateText] = useState("");
     const [hasCommunity, setHasCommunity] = useState(false);
@@ -84,6 +86,13 @@ function Community() {
                 closeModal();
                 // Refresh community data
                 await fetchCommunityData();
+                
+                // Refresh user points
+                const meRes = await fetch(`${API_BASE_URL}/users/me`, { credentials: "include" });
+                const meData = await meRes.json();
+                if (meData.success) {
+                    setUser(meData.user);
+                }
             } else {
                 alert(data.message || "Failed to post update");
             }
@@ -201,17 +210,11 @@ function Community() {
                                 {feed.map((post) => (
                                     <article key={post._id} className="overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md">
                                         <div className="flex items-center gap-3">
-                                            {post.author?.avatar ? (
-                                                <img
-                                                    src={post.author.avatar}
-                                                    alt={post.author.username}
-                                                    className="h-10 w-10 rounded-full object-cover"
-                                                />
-                                            ) : (
-                                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 text-sm font-bold text-emerald-600">
-                                                    {post.author?.username?.[0]?.toUpperCase() || "G"}
-                                                </div>
-                                            )}
+                                            <img
+                                                src={post.author?.avatar ? (post.author.avatar.startsWith("http") ? post.author.avatar : `${API_BASE_URL}${post.author.avatar}`) : `https://api.dicebear.com/7.x/initials/svg?seed=${post.author?.username || 'User'}`}
+                                                alt={post.author?.username}
+                                                className="h-10 w-10 rounded-full object-cover border border-slate-100"
+                                            />
                                             <div>
                                                 <h3 className="text-sm font-bold text-slate-950">
                                                     {post.author?.username || "Guardian"}

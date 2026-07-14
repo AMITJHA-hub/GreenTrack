@@ -10,7 +10,9 @@ import {
     getFollowing,
     getFollowers,
     getSuggestions,
+    updateAvatar, // <-- Import updateAvatar
 } from "../controllers/user.controller.js";
+import { upload } from "../middleware/multer.middleware.js"; // <-- Import upload
 
 const router = express.Router();
 router.route("/google").post(googleAuth);
@@ -22,5 +24,6 @@ router.route("/follow/:targetUserId").post(verifyJWT, toggleFollowUser);
 router.route("/following").get(verifyJWT, getFollowing);
 router.route("/followers").get(verifyJWT, getFollowers);
 router.route("/suggestions").get(verifyJWT, getSuggestions);
+router.route("/update-avatar").post(verifyJWT, upload.single("avatar"), updateAvatar); // <-- Add update-avatar route
 
 export default router;

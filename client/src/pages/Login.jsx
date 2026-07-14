@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { Trees, Loader2 } from "lucide-react";
@@ -8,9 +8,25 @@ import { useAuth } from "../context/AuthContext.jsx";
 
 function Login() {
     const navigate = useNavigate();
-    const { setUser } = useAuth();
+    const { user, setUser, authLoading } = useAuth();
+
+    useEffect(() => {
+        if (!authLoading && user) {
+            navigate("/dashboard");
+        }
+    }, [user, authLoading, navigate]);
 
     const [mode, setMode] = useState("login");
+
+    if (authLoading) {
+        return (
+            <div className="flex min-h-screen items-center justify-center bg-slate-50">
+                <div className="text-center font-black text-emerald-600 animate-pulse text-lg tracking-wider">
+                    Connecting to GreenTrack...
+                </div>
+            </div>
+        );
+    }
 
     const [formData, setFormData] = useState({
         username: "",

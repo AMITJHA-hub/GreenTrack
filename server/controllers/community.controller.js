@@ -1,6 +1,7 @@
 import { Community } from "../models/community.model.js";
 import { User } from "../models/user.model.js";
 import Tree from "../models/tree.model.js";
+import { getOrCreateCommunityByCoordinates } from "../utils/geocoding.js";
 
 export const getMyCommunityDetails = async (req, res) => {
     try {
@@ -11,29 +12,12 @@ export const getMyCommunityDetails = async (req, res) => {
             if (userTree) {
                 let matchedComm = userTree.community;
                 if (!matchedComm) {
-                    const geoMatchedComm = await Community.findOne({
-                        boundary: {
-                            $geoIntersects: {
-                                $geometry: {
-                                    type: "Point",
-                                    coordinates: userTree.location.coordinates,
-                                },
-                            },
-                        },
-                    });
-                    
-                    if (geoMatchedComm) {
-                        matchedComm = geoMatchedComm._id;
-                    } else {
-                        const fallbackComm = await Community.findOne();
-                        if (fallbackComm) {
-                            matchedComm = fallbackComm._id;
-                        }
-                    }
-                    
-                    if (matchedComm) {
-                        await Tree.updateMany({ owner: req.user._id }, { $set: { community: matchedComm } });
-                    }
+                    const dynamicComm = await getOrCreateCommunityByCoordinates(
+                        userTree.location.coordinates[1],
+                        userTree.location.coordinates[0]
+                    );
+                    matchedComm = dynamicComm._id;
+                    await Tree.updateMany({ owner: req.user._id }, { $set: { community: matchedComm } });
                 }
                 if (matchedComm) {
                     await User.findByIdAndUpdate(req.user._id, { $set: { community: matchedComm } });

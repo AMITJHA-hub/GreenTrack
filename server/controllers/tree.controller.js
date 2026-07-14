@@ -1,6 +1,7 @@
 import { User } from "../models/user.model.js";
 import Tree from "../models/tree.model.js";
 import { Community } from "../models/community.model.js";
+import { getOrCreateCommunityByCoordinates } from "../utils/geocoding.js";
 import fs from "fs";
 import path from "path";
 
@@ -21,25 +22,8 @@ export const registerTree = async (req, res) => {
             return res.status(400).json({ message: "All fields, including location coordinates, are required." });
         }
 
-        // 1. Search for a community polygon containing this tree's coordinates
-        let containingCommunity = await Community.findOne({
-            boundary: {
-                $geoIntersects: {
-                    $geometry: {
-                        type: "Point",
-                        coordinates: [
-                            Number(longitude),
-                            Number(latitude),
-                        ],
-                    },
-                },
-            },
-        });
-
-        // Fallback to the first community in the database if no direct match is found
-        if (!containingCommunity) {
-            containingCommunity = await Community.findOne();
-        }
+        // 1. Resolve or dynamically create the community based on coordinates
+        const containingCommunity = await getOrCreateCommunityByCoordinates(latitude, longitude);
 
         // 2. Initialize the points increment logic
         const pointsUpdate = { globalPoints: 100 };
@@ -47,10 +31,8 @@ export const registerTree = async (req, res) => {
 
         // 3. If a community matches, layer on local points and the dynamic $set community link
         if (containingCommunity) {
-            pointsUpdate.localPoints = 100;
-
-            // Dynamically assign the user to this community inside their document
             userUpdates.$set = { community: containingCommunity._id };
+            pointsUpdate.localPoints = 100;
 
             await Community.findByIdAndUpdate(containingCommunity._id, {
                 $inc: { totalPoints: 100 },
