@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import {
     Trees,
@@ -21,7 +21,6 @@ function Navbar() {
         isActive
             ? "flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2 font-semibold text-green-700"
             : "flex items-center gap-2 font-medium text-gray-600";
-
     return (
         <nav className="sticky top-0 z-50 border-b bg-white">
 
@@ -72,20 +71,20 @@ function Navbar() {
                 </div>
 
                 {/* Desktop Profile */}
-                <div className="hidden items-center gap-4 lg:flex">
-                    <span className="text-sm font-medium text-gray-700">
-                        Points: {user?.points ?? 0}
+                <div className="hidden items-center gap-4 lg:flex text-sm">
+                    <span className="font-semibold text-emerald-600 bg-emerald-50 border border-emerald-100 px-3.5 py-1.5 rounded-full">
+                        Points: {user?.globalPoints ?? 0}
                     </span>
 
-                    <div className="flex items-center gap-2 font-medium text-gray-700">
-                        <UserRound size={20} />
+                    <Link to="/profile" className="flex items-center gap-2 font-semibold text-slate-700 hover:text-emerald-600 transition">
+                        <UserRound size={20} className="text-slate-400" />
 
                         <span>
                             {authLoading
                                 ? "Loading..."
                                 : user?.username || "Profile"}
                         </span>
-                    </div>
+                    </Link>
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -109,7 +108,7 @@ function Navbar() {
                             className={linkStyle}
                             onClick={() => setMenuOpen(false)}
                         >
-                            <LayoutDashboard size={20} />
+                            <LayoutDashboard size={18} />
                             Dashboard
                         </NavLink>
 
@@ -118,7 +117,7 @@ function Navbar() {
                             className={linkStyle}
                             onClick={() => setMenuOpen(false)}
                         >
-                            <Globe2 size={20} />
+                            <Globe2 size={18} />
                             Feed
                         </NavLink>
 
@@ -127,7 +126,7 @@ function Navbar() {
                             className={linkStyle}
                             onClick={() => setMenuOpen(false)}
                         >
-                            <Users size={20} />
+                            <Users size={18} />
                             Community
                         </NavLink>
 
@@ -136,7 +135,7 @@ function Navbar() {
                             className={linkStyle}
                             onClick={() => setMenuOpen(false)}
                         >
-                            <UserRound size={20} />
+                            <UserRound size={18} />
                             Friends
                         </NavLink>
 
@@ -145,7 +144,7 @@ function Navbar() {
                             className={linkStyle}
                             onClick={() => setMenuOpen(false)}
                         >
-                            <Sprout size={20} />
+                            <Sprout size={18} />
                             My Trees
                         </NavLink>
 
@@ -154,23 +153,26 @@ function Navbar() {
                             className={linkStyle}
                             onClick={() => setMenuOpen(false)}
                         >
-                            <Trophy size={20} />
+                            <Trophy size={18} />
                             Rankings
                         </NavLink>
-                        <div className="flex items-center gap-4">
-                            <span className="text-sm font-medium text-gray-700">
-                                Points: {user?.points ?? 0}
+                        <div className="flex items-center justify-between border-t border-slate-100 pt-3">
+                            <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">
+                                Points: {user?.globalPoints ?? 0}
                             </span>
 
-                            <div className="flex items-center gap-2 font-medium text-gray-700">
-                                <UserRound size={20} />
-
+                            <Link 
+                                to="/profile" 
+                                onClick={() => setMenuOpen(false)}
+                                className="flex items-center gap-2 font-semibold text-gray-700 text-xs hover:text-emerald-600 transition"
+                            >
+                                <UserRound size={18} />
                                 <span>
                                     {authLoading
                                         ? "Loading..."
-                                        : user?.name || "Profile"}
+                                        : user?.username || "Profile"}
                                 </span>
-                            </div>
+                            </Link>
                         </div>
 
                     </div>

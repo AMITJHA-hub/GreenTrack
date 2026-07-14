@@ -42,18 +42,18 @@ export const registerTree = async (req, res) => {
         }
 
         // 2. Initialize the points increment logic
-        const pointsUpdate = { globalPoints: 10 };
+        const pointsUpdate = { globalPoints: 100 };
         const userUpdates = { $inc: pointsUpdate };
 
         // 3. If a community matches, layer on local points and the dynamic $set community link
         if (containingCommunity) {
-            pointsUpdate.localPoints = 10;
+            pointsUpdate.localPoints = 100;
 
             // Dynamically assign the user to this community inside their document
             userUpdates.$set = { community: containingCommunity._id };
 
             await Community.findByIdAndUpdate(containingCommunity._id, {
-                $inc: { totalPoints: 10 },
+                $inc: { totalPoints: 100 },
             });
         }
 
@@ -147,13 +147,13 @@ export const deleteTree = async (req, res) => {
         }
 
         // Deduct points
-        const pointsUpdate = { globalPoints: -10 };
+        const pointsUpdate = { globalPoints: -100 };
         const userUpdates = { $inc: pointsUpdate };
 
         if (tree.community) {
-            pointsUpdate.localPoints = -10;
+            pointsUpdate.localPoints = -100;
             await Community.findByIdAndUpdate(tree.community, {
-                $inc: { totalPoints: -10 },
+                $inc: { totalPoints: -100 },
             });
         }
 

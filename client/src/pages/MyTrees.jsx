@@ -9,8 +9,24 @@ import {
     Trash2,
 } from "lucide-react";
 import API_BASE_URL from "../api/api.js";
+import { useAuth } from "../context/AuthContext.jsx";
 
 function MyTrees() {
+    const { setUser } = useAuth();
+
+    async function fetchCurrentUser() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/users/me`, {
+                credentials: "include"
+            });
+            const data = await response.json();
+            if (data.success) {
+                setUser(data.user);
+            }
+        } catch (error) {
+            console.error("Error fetching user:", error);
+        }
+    }
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [deleteConfirmId, setDeleteConfirmId] = useState(null);
@@ -215,6 +231,7 @@ function MyTrees() {
             });
 
             setIsModalOpen(false);
+            fetchCurrentUser();
 
         } catch (error) {
             setError(error.message);
@@ -242,6 +259,7 @@ function MyTrees() {
 
             setTrees((previousTrees) => previousTrees.filter((tree) => tree._id !== treeId));
             alert(data.message || "Tree deleted successfully.");
+            fetchCurrentUser();
         } catch (error) {
             alert(error.message);
         }
