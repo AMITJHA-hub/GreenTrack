@@ -1,13 +1,13 @@
 import { User } from "../models/user.model.js";
 import { Community } from "../models/community.model.js";
 
-// 1. Get Top Users Globally
+
 export const getGlobalPlanters = async (req, res) => {
     try {
         const topPlanters = await User.find()
             .select("username avatar globalPoints")
-            .sort({ globalPoints: -1 }) // Sort by highest global points first
-            .limit(10); // Limit to top 10 for performance
+            .sort({ globalPoints: -1 }) 
+            .limit(10); 
 
         return res.status(200).json({
             success: true,
@@ -18,12 +18,12 @@ export const getGlobalPlanters = async (req, res) => {
     }
 };
 
-// 2. Get Top Communities
+
 export const getTopCommunities = async (req, res) => {
     try {
         const topCommunities = await Community.find()
             .select("name totalPoints")
-            .sort({ totalPoints: -1 }) // Sort by highest total community points
+            .sort({ totalPoints: -1 }) 
             .limit(10);
 
         return res.status(200).json({
@@ -35,14 +35,14 @@ export const getTopCommunities = async (req, res) => {
     }
 };
 
-// 3. Get Top Users in a Specific Community
+
 export const getLocalLeaderboard = async (req, res) => {
     try {
         const { communityId } = req.params;
 
         const localPlanters = await User.find({ community: communityId })
             .select("username avatar localPoints")
-            .sort({ localPoints: -1 }) // Sort by local points
+            .sort({ localPoints: -1 }) 
             .limit(10);
 
         return res.status(200).json({

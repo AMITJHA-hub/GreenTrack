@@ -268,7 +268,7 @@ function MyTrees() {
     return (
         <main className="min-h-[calc(100vh-5rem)] bg-transparent px-4 py-8 sm:px-6 md:px-10 lg:px-16 lg:py-12">
 
-            {/* Page Header */}
+            {}
             <section className="flex flex-col gap-8 border-b border-slate-200 pb-8 md:flex-row md:items-end md:justify-between lg:pb-10">
 
                 <div>
@@ -303,7 +303,7 @@ function MyTrees() {
 
             </section>
 
-            {/* Loading */}
+            {}
             {isLoading && (
                 <section className="mt-12 flex min-h-[400px] items-center justify-center rounded-3xl border border-slate-200 bg-white">
                     <p className="font-bold text-slate-500">
@@ -312,14 +312,14 @@ function MyTrees() {
                 </section>
             )}
 
-            {/* Page Error */}
+            {}
             {!isLoading && error && !isModalOpen && (
                 <div className="mt-8 rounded-2xl bg-red-50 px-5 py-4 font-medium text-red-600">
                     {error}
                 </div>
             )}
 
-            {/* Empty State */}
+            {}
             {!isLoading && trees.length === 0 && (
                 <section className="mt-8 flex min-h-[480px] items-center justify-center rounded-3xl border-2 border-dashed border-slate-200 bg-white px-5 py-12 sm:mt-12 sm:min-h-[560px] sm:rounded-[3rem]">
 
@@ -354,7 +354,7 @@ function MyTrees() {
                 </section>
             )}
 
-            {/* Tree Cards */}
+            {}
             {!isLoading && trees.length > 0 && (
                 <section className="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
 
@@ -415,13 +415,13 @@ function MyTrees() {
                 </section>
             )}
 
-            {/* Registration Modal */}
+            {}
             {isModalOpen && (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/50 p-4">
 
                     <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl sm:p-8">
 
-                        {/* Modal Header */}
+                        {}
                         <div className="flex items-start justify-between gap-4">
 
                             <div>
@@ -447,7 +447,7 @@ function MyTrees() {
 
                         </div>
 
-                        {/* Form */}
+                        {}
                         <form
                             onSubmit={handleSubmit}
                             className="mt-8 space-y-5"
@@ -491,54 +491,7 @@ function MyTrees() {
 
                                     <input
                                         type="file"
-                                        accept="image/*"
-                                        onChange={handleImageChange}
-                                        className="hidden"
-                                    />
-
-                                </label>
-                            </div>
-                            {previewImage && (
-                                <div className="overflow-hidden rounded-2xl border border-slate-200">
-
-                                    <img
-                                        src={previewImage}
-                                        alt="Preview"
-                                        className="h-56 w-full object-cover"
-                                    />
-
-                                </div>
-                            )}
-                            <div className="rounded-xl bg-slate-50 p-4">
-                                <div className="flex items-start gap-3">
-                                    <MapPin
-                                        size={20}
-                                        className="mt-0.5 text-emerald-500"
-                                    />
-                                    <div>
-                                        <p className="text-sm font-semibold text-slate-700">
-                                            Current Location
-                                        </p>
-                                        <p className="text-xs text-slate-500">
-                                            {locationStatus}
-                                        </p>
-                                        {location.latitude !== null && location.longitude !== null && (
-                                            <div className="mt-2 text-xs font-semibold text-emerald-700">
-                                                <p>Latitude: {location.latitude}</p>
-                                                <p>Longitude: {location.longitude}</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-
-                            {error && (
-                                <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
-                                    {error}
-                                </p>
-                            )}
-
-                            {/* Actions */}
+                                        accept="image}
                             <div className="flex flex-col-reverse gap-3 pt-3 sm:flex-row sm:justify-end">
 
                                 <button
@@ -571,7 +524,7 @@ function MyTrees() {
                 </div>
             )}
 
-            {/* Delete Confirmation Modal */}
+            {}
             {deleteConfirmId && (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/50 p-4">
                     <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl sm:p-8">

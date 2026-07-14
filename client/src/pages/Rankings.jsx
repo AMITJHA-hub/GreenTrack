@@ -21,21 +21,21 @@ function Rankings() {
     useEffect(() => {
         async function fetchLeaderboardData() {
             try {
-                // 1. Fetch top users globally
+                
                 const plantersRes = await fetch(`${API_BASE_URL}/leaderboards/global-planters`);
                 const plantersData = await plantersRes.json();
                 if (plantersData.success) {
                     setPlanters(plantersData.data);
                 }
 
-                // 2. Fetch top communities
+                
                 const commRes = await fetch(`${API_BASE_URL}/leaderboards/top-communities`);
                 const commData = await commRes.json();
                 if (commData.success) {
                     setCommunities(commData.data);
                 }
 
-                // 3. Fetch user details and local community standings
+                
                 const userRes = await fetch(`${API_BASE_URL}/users/me`, {
                     credentials: "include"
                 });
@@ -74,7 +74,7 @@ function Rankings() {
         <main className="min-h-[calc(100vh-5rem)] bg-transparent px-4 py-10 sm:px-6 md:px-8 md:py-16">
             <section className="mx-auto flex max-w-5xl flex-col items-center text-center">
 
-                {/* Badge */}
+                {}
                 <div className="inline-flex items-center gap-2 rounded-full border border-emerald-250 bg-emerald-50 px-4 py-2 shadow-sm">
                     <Trophy size={16} className="text-emerald-600 animate-pulse" />
                     <span className="text-xs font-black tracking-[0.2em] text-emerald-700">
@@ -82,7 +82,7 @@ function Rankings() {
                     </span>
                 </div>
 
-                {/* Heading */}
+                {}
                 <h1 className="mt-6 text-4xl font-black tracking-tight text-slate-950 sm:text-5xl md:text-6xl">
                     Leaderboard
                 </h1>
@@ -91,7 +91,7 @@ function Rankings() {
                     Competing to restore the planet&apos;s lungs.
                 </p>
 
-                {/* Tabs */}
+                {}
                 <div className="mt-10 flex w-full max-w-2xl flex-col rounded-2xl border border-slate-200 bg-slate-100 p-1 sm:mt-12 sm:flex-row">
                     <button
                         onClick={() => setActiveTab("planters")}
@@ -129,11 +129,11 @@ function Rankings() {
                     </button>
                 </div>
 
-                {/* Podium Display (Top 3) */}
+                {}
                 {!isLoading && currentData.length > 0 && (
                     <div className="mb-6 mt-16 flex items-end justify-center gap-2 sm:gap-6 w-full max-w-2xl">
                         
-                        {/* 2nd Place */}
+                        {}
                         {topThree[1] && (
                             <div className="flex flex-col items-center flex-1">
                                 <div className="relative mb-3">
@@ -156,14 +156,14 @@ function Rankings() {
                                 <p className="text-[10px] font-black text-emerald-600 mb-2">
                                     {(activeTab === "communities" ? topThree[1].totalPoints : (activeTab === "planters" ? topThree[1].globalPoints : topThree[1].localPoints)) || 0} pts
                                 </p>
-                                {/* 2nd Place Pedestal */}
+                                {}
                                 <div className="w-24 h-16 bg-slate-50 border-t border-slate-200 rounded-t-xl flex items-center justify-center shadow-inner">
                                     <span className="text-xl font-bold text-slate-300">2</span>
                                 </div>
                             </div>
                         )}
 
-                        {/* 1st Place */}
+                        {}
                         {topThree[0] && (
                             <div className="flex flex-col items-center flex-1">
                                 <div className="relative mb-4 scale-110">
@@ -187,14 +187,14 @@ function Rankings() {
                                 <p className="text-xs font-black text-emerald-600 mb-2">
                                     {(activeTab === "communities" ? topThree[0].totalPoints : (activeTab === "planters" ? topThree[0].globalPoints : topThree[0].localPoints)) || 0} pts
                                 </p>
-                                {/* 1st Place Pedestal */}
+                                {}
                                 <div className="w-28 h-24 bg-emerald-50 border-t-2 border-emerald-300 rounded-t-2xl flex items-center justify-center shadow-inner">
                                     <span className="text-3xl font-extrabold text-emerald-500">1</span>
                                 </div>
                             </div>
                         )}
 
-                        {/* 3rd Place */}
+                        {}
                         {topThree[2] && (
                             <div className="flex flex-col items-center flex-1">
                                 <div className="relative mb-3">
@@ -217,7 +217,7 @@ function Rankings() {
                                 <p className="text-[10px] font-black text-emerald-600 mb-2">
                                     {(activeTab === "communities" ? topThree[2].totalPoints : (activeTab === "planters" ? topThree[2].globalPoints : topThree[2].localPoints)) || 0} pts
                                 </p>
-                                {/* 3rd Place Pedestal */}
+                                {}
                                 <div className="w-24 h-12 bg-amber-50/10 border-t border-amber-200 rounded-t-xl flex items-center justify-center shadow-inner">
                                     <span className="text-lg font-bold text-amber-700">3</span>
                                 </div>
@@ -226,7 +226,7 @@ function Rankings() {
                     </div>
                 )}
 
-                {/* Leaderboard Content list (from #4 onwards) */}
+                {}
                 <div className="mt-4 w-full max-w-4xl rounded-3xl border border-slate-200 bg-white p-4 sm:p-8 shadow-sm">
                     {isLoading ? (
                         <div className="text-center py-10 font-bold text-slate-500 animate-pulse">Loading standings...</div>
@@ -234,7 +234,7 @@ function Rankings() {
                         <div className="text-center py-10 font-bold text-slate-400">No records found.</div>
                     ) : (
                         <div className="space-y-1">
-                            {/* Render list starting from rank #4 if available */}
+                            {}
                             {rest.length === 0 ? (
                                 <div className="text-center py-6 text-sm font-bold text-slate-400">
                                     All standings displayed on the podium.

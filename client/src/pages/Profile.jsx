@@ -80,7 +80,7 @@ function Profile() {
         }
     }, [user]);
 
-    // Calculate level based on global points
+    
     const points = user?.globalPoints || 0;
     const currentLevel = Math.floor(points / 100) + 1;
     const pointsInLevel = points % 100;
@@ -89,22 +89,18 @@ function Profile() {
         <main className="min-h-[calc(100vh-5rem)] bg-transparent px-4 py-8 sm:px-6 md:px-8">
             <div className="mx-auto max-w-5xl space-y-6">
 
-                {/* Hero Profile Card */}
+                {}
                 <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-                    {/* Cover Photo Banner */}
+                    {}
                     <div className="h-48 bg-gradient-to-r from-emerald-500 to-teal-600" />
                     
                     <div className="px-6 pb-8 sm:px-8">
-                        {/* Hidden file input */}
+                        {}
                         <input
                             type="file"
                             ref={avatarInputRef}
                             onChange={handleAvatarChange}
-                            accept="image/*"
-                            className="hidden"
-                        />
-
-                        {/* Interactive Avatar */}
+                            accept="image}
                         <div 
                             onClick={() => avatarInputRef.current && avatarInputRef.current.click()}
                             className="group relative -mt-28 flex h-44 w-44 cursor-pointer items-center justify-center overflow-hidden rounded-[2.75rem] border-4 border-white bg-slate-950 text-4xl text-white shadow-2xl transition-transform hover:scale-105"
@@ -114,7 +110,7 @@ function Profile() {
                                 alt={user?.username} 
                                 className="h-full w-full object-cover" 
                             />
-                            {/* Hover Overlay */}
+                            {}
                             <div className="absolute inset-0 flex items-center justify-center bg-slate-950/50 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <span className="text-xs font-black tracking-widest uppercase text-white">Change</span>
                             </div>
@@ -134,7 +130,7 @@ function Profile() {
                                 </div>
                             </div>
 
-                            {/* Main CTA */}
+                            {}
                             <div className="flex items-center gap-3 shrink-0">
                                 <button
                                     onClick={() => navigate("/feed")}
@@ -153,10 +149,10 @@ function Profile() {
                     </div>
                 </div>
 
-                {/* Grid Layout for Stats and Level Progress */}
+                {}
                 <div className="grid gap-6 md:grid-cols-3">
                     
-                    {/* XP Progress Card */}
+                    {}
                     <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:col-span-2">
                         <div className="flex items-center justify-between">
                             <h3 className="text-sm font-black tracking-wider text-slate-400">
@@ -168,7 +164,7 @@ function Profile() {
                         </div>
                         
                         <div className="mt-6">
-                            {/* Bar container */}
+                            {}
                             <div className="h-3 w-full rounded-full bg-slate-100 overflow-hidden">
                                 <div 
                                     className="h-full rounded-full bg-emerald-500 transition-all duration-500"
@@ -181,7 +177,7 @@ function Profile() {
                         </div>
                     </div>
 
-                    {/* Community Affiliation */}
+                    {}
                     <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm flex flex-col justify-between">
                         <div>
                             <div className="flex items-center gap-2 text-slate-400">
@@ -202,10 +198,10 @@ function Profile() {
 
                 </div>
 
-                {/* General Stats Grid */}
+                {}
                 <div className="grid gap-6 sm:grid-cols-3">
                     
-                    {/* Stat Card: Global Points */}
+                    {}
                     <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm flex items-center gap-4">
                         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-500">
                             <Trophy size={24} />
@@ -216,7 +212,7 @@ function Profile() {
                         </div>
                     </div>
 
-                    {/* Stat Card: Trees Planted */}
+                    {}
                     <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm flex items-center gap-4">
                         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-500">
                             <Sprout size={24} />
@@ -227,7 +223,7 @@ function Profile() {
                         </div>
                     </div>
 
-                    {/* Stat Card: Local Points */}
+                    {}
                     <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm flex items-center gap-4">
                         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-500">
                             <Activity size={24} />
@@ -240,7 +236,7 @@ function Profile() {
 
                 </div>
 
-                {/* Planted Trees Section */}
+                {}
                 <div className="space-y-4">
                     <div className="flex items-center gap-2">
                         <Leaf size={20} className="text-emerald-500" />
@@ -276,7 +272,7 @@ function Profile() {
                                     key={tree._id} 
                                     className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm flex flex-col"
                                 >
-                                    {/* Image Wrapper */}
+                                    {}
                                     <div className="relative h-48 bg-slate-100 overflow-hidden">
                                         <img 
                                             src={`${API_BASE_URL}${tree.photoUrl}`} 
@@ -298,7 +294,7 @@ function Profile() {
                                         </span>
                                     </div>
 
-                                    {/* Card Details */}
+                                    {}
                                     <div className="p-5 flex-1 flex flex-col justify-between">
                                         <div>
                                             <h3 className="text-base font-black text-slate-900 capitalize">

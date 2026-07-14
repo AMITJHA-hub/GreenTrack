@@ -56,7 +56,7 @@ export function AuthProvider({ children }) {
                 updateLocalUser(data.user);
             } catch (error) {
                 console.error("Failed to get current user:", error);
-                // Only log out on explicit unauthorized responses, not offline network errors
+                
                 if (error.message && (error.message.includes("401") || error.message.includes("403"))) {
                     updateLocalUser(null);
                 }

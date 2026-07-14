@@ -1,14 +1,14 @@
 import { Community } from "../models/community.model.js";
 import { Post } from "../models/post.model.js";
 import { User } from "../models/user.model.js";
-import Tree from "../models/tree.model.js"; // <-- Import Tree model
+import Tree from "../models/tree.model.js";
 
 
 export const createPost = async (req, res) => {
     try {
         const { content } = req.body;
         const authorId = req.user._id;
-        const communityId = req.user.community; // Attached by your authentication middleware
+        const communityId = req.user.community;
 
         if (!content || content.trim() === "") {
             return res.status(400).json({ message: "Post content cannot be empty." });
@@ -29,8 +29,6 @@ export const createPost = async (req, res) => {
             imageUrl: imageUrl || "",
             community: communityId
         });
-
-        // Award points for post creation (50 points)
         await User.findByIdAndUpdate(authorId, {
             $inc: { globalPoints: 50, localPoints: communityId ? 50 : 0 }
         });
@@ -65,7 +63,7 @@ export const toggleLikePost = async (req, res) => {
 
         const hasLiked = post.likes.includes(userId);
 
-        // Award or deduct points for likes (5 points)
+        
         const pointsDiff = hasLiked ? -5 : 5;
         await User.findByIdAndUpdate(userId, {
             $inc: { globalPoints: pointsDiff, localPoints: req.user.community ? pointsDiff : 0 }
@@ -77,8 +75,8 @@ export const toggleLikePost = async (req, res) => {
         }
 
         let updateOperator = hasLiked
-            ? { $pull: { likes: userId } }  // If liked, remove it (Unlike)
-            : { $addToSet: { likes: userId } }; // If not liked, add it safely (Like)
+            ? { $pull: { likes: userId } }  
+            : { $addToSet: { likes: userId } }; 
 
         const updatedPost = await Post.findByIdAndUpdate(
             postId,
@@ -124,7 +122,7 @@ export const addComment = async (req, res) => {
             return res.status(404).json({ message: "Post not found." });
         }
 
-        // Award points for commenting (20 points)
+        
         await User.findByIdAndUpdate(authorId, {
             $inc: { globalPoints: 20, localPoints: req.user.community ? 20 : 0 }
         });
@@ -159,16 +157,16 @@ export const getCommunityFeed = async (req, res) => {
             .populate("author", "username avatar globalPoints localPoints")
             .populate("comments.author", "username avatar");
 
-        // 1. Fetch total forestage (global tree count)
+        
         const totalTrees = await Tree.countDocuments();
 
-        // 2. Fetch top 3 star teams (communities) by points
+        
         const starTeams = await Community.find()
             .select("name totalPoints")
             .sort({ totalPoints: -1 })
             .limit(3);
 
-        // 3. Aggregate top 3 global trending tree types
+        
         const trendingTrees = await Tree.aggregate([
             {
                 $group: {
@@ -207,23 +205,23 @@ export const deletePost = async (req, res) => {
             return res.status(404).json({ message: "Post not found." });
         }
 
-        // Verify if the user deleting is the author of the post
+        
         if (post.author.toString() !== userId.toString()) {
             return res.status(403).json({
                 message: "You do not have permission to delete this post."
             });
         }
 
-        // 1. Deduct points from post creator (50 points)
+        
         const authorUser = await User.findById(post.author);
         await User.findByIdAndUpdate(post.author, {
-            $inc: { 
+            $inc: {
                 globalPoints: -50,
                 localPoints: (authorUser && authorUser.community) ? -50 : 0
             }
         });
 
-        // 2. Deduct points from users who liked the post (5 points each)
+        
         if (post.likes && post.likes.length > 0) {
             await User.updateMany(
                 { _id: { $in: post.likes } },
@@ -235,7 +233,7 @@ export const deletePost = async (req, res) => {
             );
         }
 
-        // 3. Deduct points from commenters (20 points per comment)
+        
         if (post.comments && post.comments.length > 0) {
             const commentCountsByAuthor = {};
             for (const comment of post.comments) {
@@ -247,7 +245,7 @@ export const deletePost = async (req, res) => {
             for (const [authorId, count] of Object.entries(commentCountsByAuthor)) {
                 const commenter = await User.findById(authorId);
                 await User.findByIdAndUpdate(authorId, {
-                    $inc: { 
+                    $inc: {
                         globalPoints: -(20 * count),
                         localPoints: (commenter && commenter.community) ? -(20 * count) : 0
                     }
@@ -255,7 +253,7 @@ export const deletePost = async (req, res) => {
             }
         }
 
-        // 4. Deduct points from the community's totalPoints
+        
         if (post.community) {
             const likesCount = post.likes ? post.likes.length : 0;
             const commentsCount = post.comments ? post.comments.length : 0;

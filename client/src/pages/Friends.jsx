@@ -73,7 +73,7 @@ function Friends() {
     return (
         <main className="min-h-[calc(100vh-5rem)] bg-transparent px-4 py-10 sm:px-6 md:px-10 md:py-16">
             <section className="mx-auto max-w-6xl">
-                {/* Header */}
+                {}
                 <div>
                     <h1 className="text-4xl font-black tracking-tight text-slate-950 sm:text-5xl md:text-6xl">
                         MY SOCIAL CIRCLE
@@ -85,9 +85,9 @@ function Friends() {
 
                 <div className="mt-10 grid gap-8 lg:grid-cols-[1.7fr_1fr]">
                     
-                    {/* Left Column: Tab contents */}
+                    {}
                     <div>
-                        {/* Tabs */}
+                        {}
                         <div className="flex w-full flex-col rounded-2xl bg-slate-100 p-1 sm:flex-row">
                             <button
                                 onClick={() => setActiveTab("following")}
@@ -111,7 +111,7 @@ function Friends() {
                             </button>
                         </div>
 
-                        {/* List Content */}
+                        {}
                         <div className="mt-8">
                             {isLoading ? (
                                 <div className="flex min-h-[300px] items-center justify-center rounded-3xl border border-slate-200 bg-white">
@@ -159,7 +159,7 @@ function Friends() {
                                                 </div>
                                             </div>
                                             
-                                            {/* Action Button */}
+                                            {}
                                             {activeTab === "following" ? (
                                                 <button
                                                     disabled={actionLoadingId === person._id}
@@ -192,7 +192,7 @@ function Friends() {
                         </div>
                     </div>
 
-                    {/* Right Column: Suggested Guardians */}
+                    {}
                     <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm h-fit">
                         <h2 className="text-lg font-black text-slate-950 flex items-center gap-2">
                             <Users size={20} className="text-emerald-500" />

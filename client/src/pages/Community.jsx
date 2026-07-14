@@ -35,7 +35,7 @@ function Community() {
                 setHasCommunity(true);
                 setCommunity(communityData.community);
 
-                // Fetch community feed
+                
                 const feedRes = await fetch(`${API_BASE_URL}/posts/getcommunityfeed`, {
                     credentials: "include",
                 });
@@ -84,10 +84,10 @@ function Community() {
             const data = await response.json();
             if (response.ok) {
                 closeModal();
-                // Refresh community data
+                
                 await fetchCommunityData();
                 
-                // Refresh user points
+                
                 const meRes = await fetch(`${API_BASE_URL}/users/me`, { credentials: "include" });
                 const meData = await meRes.json();
                 if (meData.success) {
@@ -111,7 +111,7 @@ function Community() {
                         <p className="font-bold text-slate-500 animate-pulse">Loading your green community...</p>
                     </div>
                 ) : !hasCommunity ? (
-                    /* No Community Empty State */
+                    
                     <div className="rounded-3xl border border-slate-200 bg-white px-5 py-10 text-center shadow-sm sm:px-10 sm:py-14 lg:rounded-[3rem] lg:py-16">
                         <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-slate-100 text-slate-400 sm:h-24 sm:w-24">
                             <MapPin size={42} />
@@ -131,9 +131,9 @@ function Community() {
                         </button>
                     </div>
                 ) : (
-                    /* Community View */
+                    
                     <>
-                        {/* Community Hero */}
+                        {}
                         <div className="rounded-3xl border border-slate-200 bg-white px-5 py-10 text-center shadow-sm sm:px-10 sm:py-14 lg:rounded-[3rem] lg:py-16">
                             <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-emerald-500 text-white shadow-xl shadow-emerald-200 sm:h-24 sm:w-24">
                                 <Trees size={42} />
@@ -142,7 +142,7 @@ function Community() {
                                 {community?.name} COMMUNITY
                             </h1>
 
-                            {/* Community Info */}
+                            {}
                             <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
                                 <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2">
                                     <Users size={16} className="text-emerald-600" />
@@ -170,7 +170,7 @@ function Community() {
                             </p>
                         </div>
 
-                        {/* Updates Header */}
+                        {}
                         <div className="mt-12 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                             <h2 className="text-xs font-black tracking-[0.3em] text-slate-400 sm:text-sm">
                                 COMMUNITY UPDATES
@@ -184,7 +184,7 @@ function Community() {
                             </button>
                         </div>
 
-                        {/* Feed Contents */}
+                        {}
                         {feed.length === 0 ? (
                             <div className="mt-8 flex min-h-[450px] items-center justify-center rounded-3xl border-2 border-dashed border-slate-200 bg-white px-6 py-12 sm:min-h-[520px] lg:rounded-[3rem]">
                                 <div className="flex max-w-xl flex-col items-center text-center">
@@ -240,11 +240,11 @@ function Community() {
                 )}
             </section>
 
-            {/* Share Update Modal */}
+            {}
             {isModalOpen && (
                 <div className="fixed inset-0 z-60 flex items-center justify-center bg-slate-950/50 p-4">
                     <div className="w-full max-w-xl rounded-3xl bg-white p-6 shadow-2xl sm:p-8">
-                        {/* Modal Header */}
+                        {}
                         <div className="flex items-start justify-between gap-4">
                             <div>
                                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
@@ -266,7 +266,7 @@ function Community() {
                             </button>
                         </div>
 
-                        {/* Form */}
+                        {}
                         <form onSubmit={handleSubmit} className="mt-8">
                             <label htmlFor="updateText" className="mb-2 block text-sm font-bold text-slate-700">
                                 Your Update

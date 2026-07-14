@@ -22,14 +22,14 @@ export const registerTree = async (req, res) => {
             return res.status(400).json({ message: "All fields, including location coordinates, are required." });
         }
 
-        // 1. Resolve or dynamically create the community based on coordinates
+        
         const containingCommunity = await getOrCreateCommunityByCoordinates(latitude, longitude);
 
-        // 2. Initialize the points increment logic
+        
         const pointsUpdate = { globalPoints: 100 };
         const userUpdates = { $inc: pointsUpdate };
 
-        // 3. If a community matches, layer on local points and the dynamic $set community link
+        
         if (containingCommunity) {
             userUpdates.$set = { community: containingCommunity._id };
             pointsUpdate.localPoints = 100;
@@ -39,7 +39,7 @@ export const registerTree = async (req, res) => {
             });
         }
 
-        // 4. Create the tree document in the database
+        
         const photoUrl = `/uploads/${image.filename}`;
         const tree = await Tree.create({
             treeType,
@@ -59,7 +59,7 @@ export const registerTree = async (req, res) => {
             return res.status(500).json({ message: "Tree data could not be initialized." });
         }
 
-        // 5. Update the user using the combined $inc and $set structure
+        
         const updatedUser = await User.findByIdAndUpdate(
             owner,
             userUpdates,
@@ -114,12 +114,12 @@ export const deleteTree = async (req, res) => {
             return res.status(404).json({ message: "Tree not found." });
         }
 
-        // Verify ownership
+        
         if (tree.owner.toString() !== userId.toString()) {
             return res.status(403).json({ message: "You are not authorized to delete this tree." });
         }
 
-        // Delete photo file if it exists
+        
         if (tree.photoUrl) {
             const filename = tree.photoUrl.replace("/uploads/", "");
             const filePath = path.join(process.cwd(), "uploads", filename);
@@ -127,8 +127,6 @@ export const deleteTree = async (req, res) => {
                 if (err) console.error("Error deleting image file:", err);
             });
         }
-
-        // Deduct points
         const pointsUpdate = { globalPoints: -100 };
         const userUpdates = { $inc: pointsUpdate };
 
@@ -144,8 +142,6 @@ export const deleteTree = async (req, res) => {
             userUpdates,
             { new: true }
         );
-
-        // Delete the tree document
         await Tree.findByIdAndDelete(treeId);
 
         return res.status(200).json({

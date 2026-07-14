@@ -3,20 +3,20 @@ import { ZoomIn, ZoomOut, RotateCw, X } from "lucide-react";
 
 function CropModal({ imageUrl, onClose, onSave }) {
     const [zoom, setZoom] = useState(1);
-    const [rotation, setRotation] = useState(0); // 0, 90, 180, 270
+    const [rotation, setRotation] = useState(0); 
     const [isDragging, setIsDragging] = useState(false);
     const [offset, setOffset] = useState({ x: 0, y: 0 });
     const [startDrag, setStartDrag] = useState({ x: 0, y: 0 });
     const imgRef = useRef(null);
 
-    // Reset when image changes
+    
     useEffect(() => {
         setZoom(1);
         setRotation(0);
         setOffset({ x: 0, y: 0 });
     }, [imageUrl]);
 
-    // Handle mouse / touch drag start
+    
     const handleDragStart = (e) => {
         setIsDragging(true);
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -24,7 +24,7 @@ function CropModal({ imageUrl, onClose, onSave }) {
         setStartDrag({ x: clientX - offset.x, y: clientY - offset.y });
     };
 
-    // Handle mouse / touch dragging
+    
     const handleDragMove = (e) => {
         if (!isDragging) return;
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -35,45 +35,45 @@ function CropModal({ imageUrl, onClose, onSave }) {
         });
     };
 
-    // End drag
+    
     const handleDragEnd = () => {
         setIsDragging(false);
     };
 
-    // Handle Rotate Cw
+    
     const handleRotate = () => {
         setRotation((prev) => (prev + 90) % 360);
     };
 
-    // Crop image and return as Blob
+    
     const handleSave = () => {
         const img = imgRef.current;
         if (!img) return;
 
         const canvas = document.createElement("canvas");
-        const size = 300; // Output picture size (300x300 for high resolution)
+        const size = 300; 
         canvas.width = size;
         canvas.height = size;
         const ctx = canvas.getContext("2d");
 
-        // Clear canvas
+        
         ctx.clearRect(0, 0, size, size);
 
-        // Save context state
+        
         ctx.save();
 
-        // 1. Move to canvas center to apply rotations and scaling
+        
         ctx.translate(size / 2, size / 2);
 
-        // 2. Apply rotation
+        
         ctx.rotate((rotation * Math.PI) / 180);
 
-        // 3. Draw the image with dragging offsets and zoom
-        // Viewport scale matching: viewport size in modal is 288px (w-72)
+        
+        
         const viewportSize = 288;
         const relativeScale = size / viewportSize;
 
-        // Calculate aspect fill base sizes
+        
         const imgWidth = img.naturalWidth;
         const imgHeight = img.naturalHeight;
         const scaleX = viewportSize / imgWidth;
@@ -83,17 +83,17 @@ function CropModal({ imageUrl, onClose, onSave }) {
         const w0 = imgWidth * baseScale * zoom;
         const h0 = imgHeight * baseScale * zoom;
 
-        // Compute offsets relative to canvas scale
+        
         const dx = offset.x * relativeScale;
         const dy = offset.y * relativeScale;
 
-        // Draw image centered inside the canvas viewport
+        
         ctx.drawImage(img, -w0 * relativeScale / 2 + dx, -h0 * relativeScale / 2 + dy, w0 * relativeScale, h0 * relativeScale);
 
-        // Restore context
+        
         ctx.restore();
 
-        // Convert to Blob and trigger callback
+        
         canvas.toBlob(
             (blob) => {
                 if (blob) {
@@ -109,7 +109,7 @@ function CropModal({ imageUrl, onClose, onSave }) {
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
             <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl relative">
                 
-                {/* Close Button */}
+                {}
                 <button
                     onClick={onClose}
                     className="absolute right-4 top-4 rounded-xl p-2 text-slate-400 hover:bg-slate-50 transition"
@@ -120,7 +120,7 @@ function CropModal({ imageUrl, onClose, onSave }) {
                 <h3 className="text-lg font-black text-slate-950">Crop Profile Picture</h3>
                 <p className="text-xs font-semibold text-slate-400 mt-1">Drag to position, slide to zoom</p>
 
-                {/* Viewport Frame */}
+                {}
                 <div className="my-8 flex justify-center">
                     <div
                         onMouseDown={handleDragStart}
@@ -148,9 +148,9 @@ function CropModal({ imageUrl, onClose, onSave }) {
                     </div>
                 </div>
 
-                {/* Controls */}
+                {}
                 <div className="space-y-6">
-                    {/* Zoom Slider */}
+                    {}
                     <div className="flex items-center gap-3">
                         <ZoomOut size={16} className="text-slate-400" />
                         <input
@@ -165,7 +165,7 @@ function CropModal({ imageUrl, onClose, onSave }) {
                         <ZoomIn size={16} className="text-emerald-500" />
                     </div>
 
-                    {/* Action Bar */}
+                    {}
                     <div className="flex items-center justify-between gap-4">
                         <button
                             onClick={handleRotate}

@@ -179,7 +179,7 @@ function Login() {
 
             <div className="w-full max-w-md">
 
-                {/* Logo */}
+                {}
                 <div className="mb-8 flex justify-center">
                     <div className="flex items-center gap-3">
 
@@ -196,7 +196,7 @@ function Login() {
 
                 <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl sm:p-8">
 
-                    {/* Tabs */}
+                    {}
                     <div className="grid grid-cols-2 rounded-2xl bg-slate-100 p-1">
 
                         <button
@@ -225,7 +225,7 @@ function Login() {
 
                     </div>
 
-                    {/* Heading */}
+                    {}
                     <h1 className="mt-8 text-3xl font-black text-slate-950">
                         {isRegister
                             ? "Create your account"
@@ -238,20 +238,20 @@ function Login() {
                             : "Login to continue your GreenTrack journey."}
                     </p>
 
-                    {/* Error Display */}
+                    {}
                     {error && (
                         <div className="mt-6 rounded-xl bg-red-50 p-4 text-sm font-medium text-red-600 border border-red-100">
                             {error}
                         </div>
                     )}
 
-                    {/* Normal Authentication Form */}
+                    {}
                     <form
                         onSubmit={handleSubmit}
                         className="mt-8 space-y-5"
                     >
 
-                        {/* Username only for Register */}
+                        {}
                         {isRegister && (
                             <div>
                                 <label
@@ -274,7 +274,7 @@ function Login() {
                             </div>
                         )}
 
-                        {/* Email */}
+                        {}
                         <div>
                             <label
                                 htmlFor="email"
@@ -295,7 +295,7 @@ function Login() {
                             />
                         </div>
 
-                        {/* Password */}
+                        {}
                         <div>
                             <label
                                 htmlFor="password"
@@ -316,14 +316,14 @@ function Login() {
                             />
                         </div>
 
-                        {/* Error */}
+                        {}
                         {error && (
                             <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
                                 {error}
                             </p>
                         )}
 
-                        {/* Submit */}
+                        {}
                         <button
                             type="submit"
                             disabled={isLoading || isGoogleLoading}
@@ -340,7 +340,7 @@ function Login() {
 
                     </form>
 
-                    {/* Divider */}
+                    {}
                     <div className="my-7 flex items-center gap-4">
 
                         <div className="h-px flex-1 bg-slate-200" />
@@ -353,7 +353,7 @@ function Login() {
 
                     </div>
 
-                    {/* Google Authentication */}
+                    {}
                     <div className="flex justify-center">
 
                         {isGoogleLoading ? (

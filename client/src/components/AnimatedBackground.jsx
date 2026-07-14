@@ -4,12 +4,12 @@ function AnimatedBackground() {
     return (
         <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
 
-            {/* Ambient glow */}
+            {}
             <div className="ambient-glow glow-one" />
             <div className="ambient-glow glow-two" />
             <div className="ambient-glow glow-three" />
 
-            {/* Drifting nature particles */}
+            {}
             <Leaf className="nature-particle particle-one" />
             <Sprout className="nature-particle particle-two" />
             <Leaf className="nature-particle particle-three" />

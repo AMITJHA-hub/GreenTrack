@@ -16,7 +16,7 @@ import {
     MessageSquare,
     Trash2
 } from "lucide-react";
-import { useEffect } from "react"; // make sure to import useEffect at the top
+import { useEffect } from "react"; 
 import API_BASE_URL from "../api/api.js";
 
 const resolveAvatarUrl = (avatar, username) => {
@@ -60,7 +60,7 @@ function Feed() {
         async function fetchFeed() {
             try {
                 const response = await fetch(`${API_BASE_URL}/posts/getcommunityfeed`, {
-                    credentials: "include" // needed to send access cookies
+                    credentials: "include" 
                 });
                 const data = await response.json();
                 if (data.success) {
@@ -87,7 +87,7 @@ function Feed() {
             const data = await response.json();
 
             if (data.success) {
-                // Update the post in the local state
+                
                 setPosts((prevPosts) =>
                     prevPosts.map((post) =>
                         post._id === postId
@@ -107,7 +107,7 @@ function Feed() {
         }
     };
     const [commentTexts, setCommentTexts] = useState({});
-    const [expandedCommentsPostId, setExpandedCommentsPostId] = useState(null); // Tracks which post's comment box is open
+    const [expandedCommentsPostId, setExpandedCommentsPostId] = useState(null); 
 
     const handleCommentSubmit = async (e, postId) => {
         e.preventDefault();
@@ -126,7 +126,7 @@ function Feed() {
             const data = await response.json();
 
             if (data.success) {
-                // Update the comments in local state
+                
                 setPosts((prevPosts) =>
                     prevPosts.map((post) =>
                         post._id === postId
@@ -134,7 +134,7 @@ function Feed() {
                             : post
                     )
                 );
-                // Clear input for this post
+                
                 setCommentTexts((prev) => ({ ...prev, [postId]: "" }));
                 fetchCurrentUser();
             }
@@ -153,7 +153,7 @@ function Feed() {
             const data = await response.json();
 
             if (data.success) {
-                // Remove the deleted post from the local state list
+                
                 setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
                 fetchCurrentUser();
             } else {
@@ -176,7 +176,7 @@ function Feed() {
             async (position) => {
                 const { latitude, longitude } = position.coords;
                 try {
-                    // Fetch city name from coordinates using OpenStreetMap Nominatim API
+                    
                     const response = await fetch(
                         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
                     );
@@ -237,7 +237,7 @@ function Feed() {
             const data = await response.json();
 
             if (data.success) {
-                // Add the new post to the top of the feed list
+                
                 setPosts([data.post, ...posts]);
                 closePostModal();
                 setSelectedFile(null);
@@ -256,10 +256,10 @@ function Feed() {
 
             <div className="mx-auto grid max-w-[1500px] gap-6 lg:grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[280px_minmax(0,1fr)_280px]">
 
-                {/* LEFT SIDEBAR */}
+                {}
                 <aside className="order-2 space-y-6 lg:order-1">
 
-                    {/* Profile Card */}
+                    {}
                     <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
 
                         <div className="h-24 bg-emerald-500" />
@@ -297,7 +297,7 @@ function Feed() {
                         </div>
                     </div>
 
-                    {/* Community Card */}
+                    {}
                     <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
 
                         <div className="flex items-center gap-3">
@@ -331,7 +331,7 @@ function Feed() {
 
                     </div>
 
-                    {/* Achievements */}
+                    {}
                     <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
 
                         <div className="flex items-center gap-3">
@@ -350,10 +350,10 @@ function Feed() {
 
                 </aside>
 
-                {/* CENTER FEED */}
+                {}
                 <section className="order-1 min-w-0 space-y-6 lg:order-2">
 
-                    {/* Create Post Box */}
+                    {}
                     <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
 
                         <button
@@ -399,8 +399,8 @@ function Feed() {
 
                     </div>
 
-                    {/* Empty Feed */}
-                    {/* Dynamic Feed Posts */}
+                    {}
+                    {}
                     {isLoading ? (
                         <div className="flex min-h-[200px] items-center justify-center rounded-3xl border border-slate-200 bg-white font-bold text-slate-500">
                             Loading feed...
@@ -430,7 +430,7 @@ function Feed() {
                         <div className="space-y-6">
                             {posts.map((post) => (
                                 <div key={post._id} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-                                    {/* Author Profile */}
+                                    {}
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-3">
                                             <div className="flex h-10 w-10 overflow-hidden items-center justify-center rounded-full bg-slate-950 text-white font-black text-sm">
@@ -460,12 +460,12 @@ function Feed() {
                                         )}
                                     </div>
 
-                                    {/* Post Content */}
+                                    {}
                                     <p className="mt-4 text-slate-700 leading-relaxed">
                                         {post.content}
                                     </p>
 
-                                    {/* Optional Image Attachment */}
+                                    {}
                                     {post.imageUrl && (
                                         <div className="mt-4 overflow-hidden rounded-2xl border border-slate-100 bg-slate-50">
                                             <img
@@ -475,9 +475,9 @@ function Feed() {
                                             />
                                         </div>
                                     )}
-                                    {/* Post Action Footer */}
+                                    {}
                                     <div className="mt-6 flex items-center gap-6 border-t border-slate-100 pt-4">
-                                        {/* Like Button */}
+                                        {}
                                         <button
                                             onClick={() => handleLikeToggle(post._id)}
                                             className={`flex items-center gap-2 font-bold transition ${post.likes?.includes(user?._id)
@@ -492,7 +492,7 @@ function Feed() {
                                             <span>{post.likes?.length || 0}</span>
                                         </button>
 
-                                        {/* Comment Toggle Button */}
+                                        {}
                                         <button
                                             onClick={() => setExpandedCommentsPostId(expandedCommentsPostId === post._id ? null : post._id)}
                                             className="flex items-center gap-2 font-bold text-slate-400 hover:text-emerald-500 transition"
@@ -502,10 +502,10 @@ function Feed() {
                                         </button>
                                     </div>
 
-                                    {/* Expandable Comments List & Input */}
+                                    {}
                                     {expandedCommentsPostId === post._id && (
                                         <div className="mt-4 border-t border-slate-100 pt-4 space-y-4">
-                                            {/* Comment list */}
+                                            {}
                                             {post.comments && post.comments.length > 0 && (
                                                 <div className="space-y-3 max-h-60 overflow-y-auto pr-2">
                                                     {post.comments.map((comment) => (
@@ -531,7 +531,7 @@ function Feed() {
                                                 </div>
                                             )}
 
-                                            {/* Add comment form */}
+                                            {}
                                             <form
                                                 onSubmit={(e) => handleCommentSubmit(e, post._id)}
                                                 className="flex items-center gap-2"
@@ -562,10 +562,10 @@ function Feed() {
 
                 </section>
 
-                {/* RIGHT SIDEBAR */}
+                {}
                 <aside className="order-3 hidden space-y-6 xl:block">
 
-                    {/* Global Trends */}
+                    {}
                     <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                         <div className="flex items-center gap-3">
                             <TrendingUp
@@ -592,7 +592,7 @@ function Feed() {
                         )}
                     </div>
 
-                    {/* Total Forestage */}
+                    {}
                     <div className="rounded-3xl bg-slate-900 p-7 text-white shadow-xl">
                         <p className="text-xs font-black tracking-[0.25em] text-emerald-400">
                             TOTAL FORESTAGE
@@ -606,7 +606,7 @@ function Feed() {
                         <div className="mt-8 h-2 rounded-full bg-slate-800" />
                     </div>
 
-                    {/* Star Teams */}
+                    {}
                     <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
@@ -688,7 +688,7 @@ function Feed() {
                                 required
                                 className="w-full resize-none rounded-2xl border border-slate-200 p-4 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
                             />
-                            {/* Preview selected image */}
+                            {}
                             {previewUrl && (
                                 <div className="relative mt-4 overflow-hidden rounded-2xl border border-slate-100 bg-slate-50">
                                     <img src={previewUrl} alt="Preview" className="max-h-60 w-full object-cover" />
@@ -706,15 +706,13 @@ function Feed() {
                             )}
 
                             <div className="mt-4 flex gap-3 border-t border-slate-100 py-4">
-                                {/* Hidden file input */}
+                                {}
                                 <input
                                     type="file"
                                     ref={fileInputRef}
                                     onChange={handleFileChange}
                                     className="hidden"
-                                    accept="image/*"
-                                />
-                                {/* Button that triggers the file input click */}
+                                    accept="image}
                                 <button
                                     type="button"
                                     onClick={() => fileInputRef.current && fileInputRef.current.click()}

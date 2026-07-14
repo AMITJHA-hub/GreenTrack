@@ -26,7 +26,7 @@ const PORT = process.env.PORT || 3000;
 
 
 connectDB().then(async () => {
-    // Run database scores synchronization to self-correct any retrofitted community stats
+    
     try {
         const { Community } = await import("./models/community.model.js");
         const { User } = await import("./models/user.model.js");
@@ -35,7 +35,7 @@ connectDB().then(async () => {
 
         console.log("Synchronizing database community scores...");
 
-        // 1. Sync communities totalPoints based on all trees and posts inside that community
+        
         const communities = await Community.find();
         for (const comm of communities) {
             const treeCount = await Tree.countDocuments({ community: comm._id });
@@ -44,14 +44,14 @@ connectDB().then(async () => {
             await comm.save();
         }
 
-        // 2. Sync users localPoints to match globalPoints if they are assigned to a community
+        
         const users = await User.find();
         const { getOrCreateCommunityByCoordinates } = await import("./utils/geocoding.js");
         for (const user of users) {
             const treeCount = await Tree.countDocuments({ owner: user._id });
             const postCount = await Post.countDocuments({ author: user._id });
             
-            // Auto-resolve user community to match their latest planted tree
+            
             const latestTree = await Tree.findOne({ owner: user._id }).sort({ createdAt: -1 });
             if (latestTree) {
                 const containingCommunity = await getOrCreateCommunityByCoordinates(

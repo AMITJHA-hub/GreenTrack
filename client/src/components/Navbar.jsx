@@ -34,7 +34,7 @@ function Navbar() {
 
             <div className="flex h-24 items-center justify-between px-4 sm:px-6 lg:px-10">
 
-                {/* Logo */}
+                {}
                 <div className="flex items-center gap-2 sm:gap-3">
                     <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500 text-white sm:h-14 sm:w-14">
                         <Trees size={26} />
@@ -45,7 +45,7 @@ function Navbar() {
                     </span>
                 </div>
 
-                {/* Desktop Navigation */}
+                {}
                 <div className="hidden items-center gap-4 lg:flex">
                     <NavLink to="/dashboard" className={linkStyle}>
                         <LayoutDashboard size={20} />
@@ -78,7 +78,7 @@ function Navbar() {
                     </NavLink>
                 </div>
 
-                {/* Desktop Profile */}
+                {}
                 <div className="hidden items-center gap-5 lg:flex text-base">
                     <span className="font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-4.5 py-2 rounded-full">
                         🏆 {user?.globalPoints ?? 0} Points
@@ -99,7 +99,7 @@ function Navbar() {
                     </Link>
                 </div>
 
-                {/* Mobile Menu Button */}
+                {}
                 <button
                     onClick={() => setMenuOpen(!menuOpen)}
                     className="rounded-lg p-2 text-gray-700 lg:hidden"
@@ -109,7 +109,7 @@ function Navbar() {
 
             </div>
 
-            {/* Mobile Menu */}
+            {}
             {menuOpen && (
                 <div className="absolute left-0 top-full z-50 w-full border-b bg-white p-4 shadow-lg lg:hidden">
 

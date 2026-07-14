@@ -327,9 +327,9 @@ export const getSuggestions = async (req, res) => {
         const suggestions = await User.find({
             _id: { $nin: excludedUserIds }
         })
-        .select("username avatar globalPoints")
-        .sort({ globalPoints: -1 })
-        .limit(5);
+            .select("username avatar globalPoints")
+            .sort({ globalPoints: -1 })
+            .limit(5);
 
         return res.status(200).json({
             success: true,
@@ -353,8 +353,6 @@ export const updateAvatar = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found." });
         }
-
-        // Delete old avatar file if it exists and is local (i.e. starts with /uploads/)
         if (user.avatar && user.avatar.startsWith("/uploads/")) {
             const filename = user.avatar.replace("/uploads/", "");
             const filePath = path.join(process.cwd(), "uploads", filename);
@@ -365,8 +363,6 @@ export const updateAvatar = async (req, res) => {
 
         user.avatar = `/uploads/${file.filename}`;
         await user.save();
-
-        // Populate community and other details
         const updatedUser = await User.findById(userId)
             .populate("community", "name border");
 

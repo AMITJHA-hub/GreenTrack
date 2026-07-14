@@ -16,7 +16,7 @@ function Dashboard() {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     console.log(user);
-    // Current time
+    
     const currentHour = new Date().getHours();
 
     let greeting = "";
@@ -33,7 +33,7 @@ function Dashboard() {
         GreetingIcon = Moon;
     }
 
-    // Today's date
+    
     const today = new Date().toLocaleDateString("en-US", {
         weekday: "long",
         month: "long",
@@ -77,12 +77,12 @@ function Dashboard() {
 
             <div className="mx-auto max-w-7xl">
 
-                {/* HERO SECTION */}
+                {}
                 <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white px-6 py-10 shadow-sm sm:px-10 sm:py-12 lg:rounded-[3rem] lg:px-12 lg:py-14">
 
                     <div className="grid items-center gap-10 lg:grid-cols-[1.4fr_0.6fr]">
 
-                        {/* Hero Content */}
+                        {}
                         <div>
                             <div className="flex items-center gap-2 text-emerald-600">
                                 <GreetingIcon size={20} />
@@ -119,7 +119,7 @@ function Dashboard() {
                                 </span>
                             </div>
 
-                            {/* XP Progress */}
+                            {}
                             <div className="mt-10 max-w-xl rounded-2xl border border-slate-100 bg-slate-50 p-5">
 
                                 <div className="flex items-center justify-between gap-4">
@@ -147,7 +147,7 @@ function Dashboard() {
 
                         </div>
 
-                        {/* Hero Icon */}
+                        {}
                         <div className="hidden justify-center lg:flex">
 
                             <div className="flex h-48 w-48 items-center justify-center rounded-[3rem] bg-white text-emerald-500 shadow-2xl shadow-emerald-200">
@@ -160,10 +160,10 @@ function Dashboard() {
 
                 </section>
 
-                {/* STATISTICS */}
+                {}
                 <section className="mt-8 grid gap-6 md:grid-cols-2">
 
-                    {/* Total Points */}
+                    {}
                     <article className="flex min-h-72 flex-col rounded-3xl border border-slate-200 bg-white p-7 shadow-sm sm:p-8">
 
                         <div className="flex items-start justify-between">
@@ -199,7 +199,7 @@ function Dashboard() {
 
                     </article>
 
-                    {/* Trees Planted */}
+                    {}
                     <article className="flex min-h-72 flex-col rounded-3xl border border-emerald-250 bg-white p-7 shadow-sm sm:p-8">
 
                         <div className="flex items-start justify-between">
@@ -237,7 +237,7 @@ function Dashboard() {
 
                 </section>
 
-                {/* ACTION BANNER */}
+                {}
                 <section className="mt-8 rounded-3xl bg-slate-950 px-6 py-14 text-center sm:px-10 sm:py-16 lg:rounded-[3rem] lg:py-20">
 
                     <h2 className="mx-auto max-w-3xl text-3xl font-black leading-tight text-white sm:text-4xl lg:text-5xl">

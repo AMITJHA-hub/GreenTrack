@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import connectDB from "./database/index.js";
-import { Community } from "./models/community.model.js"; // Adjust path if needed
+import { Community } from "./models/community.model.js"; 
 
-// 1. Initialize environment variables
+
 dotenv.config();
 
-// 2. Define the Mumbai Community geometry data
+
 const communitiesToSeed = [
     {
         name: "Mumbai",
