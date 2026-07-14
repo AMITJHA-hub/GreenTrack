@@ -491,7 +491,12 @@ function MyTrees() {
 
                                     <input
                                         type="file"
-                                        accept="image}
+                                        accept="image/*"
+                                        onChange={handleImageChange}
+                                        className="hidden"
+                                    />
+                                </label>
+                            </div>
                             <div className="flex flex-col-reverse gap-3 pt-3 sm:flex-row sm:justify-end">
 
                                 <button

@@ -716,58 +716,58 @@ function Feed() {
                                 />
                                 <button
                                     type="button"
-                                    onClick={() => fileInputRef.current && fileInputRef.current.click()}
-                                    className="rounded-xl p-3 text-emerald-500 transition hover:bg-emerald-50"
+                                onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                                className="rounded-xl p-3 text-emerald-500 transition hover:bg-emerald-50"
                                 >
-                                    <Image size={22} />
-                                </button>
+                                <Image size={22} />
+                            </button>
 
 
-                                <button
-                                    type="button"
-                                    onClick={handleLocationFetch}
-                                    disabled={isFetchingLocation}
-                                    className="rounded-xl p-3 text-emerald-500 transition hover:bg-emerald-50 disabled:opacity-50"
-                                >
-                                    <MapPin size={22} />
-                                </button>
+                            <button
+                                type="button"
+                                onClick={handleLocationFetch}
+                                disabled={isFetchingLocation}
+                                className="rounded-xl p-3 text-emerald-500 transition hover:bg-emerald-50 disabled:opacity-50"
+                            >
+                                <MapPin size={22} />
+                            </button>
 
-                                <button
-                                    type="button"
-                                    className="rounded-xl p-3 text-emerald-500 transition hover:bg-emerald-50"
-                                >
-                                    <Smile size={22} />
-                                </button>
-
-                            </div>
-
-                            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-
-                                <button
-                                    type="button"
-                                    onClick={closePostModal}
-                                    className="rounded-xl border border-slate-200 px-6 py-3 font-bold text-slate-600"
-                                >
-                                    CANCEL
-                                </button>
-
-                                <button
-                                    type="submit"
-                                    className="flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-6 py-3 font-bold text-white transition hover:bg-emerald-600"
-                                >
-                                    <Send size={18} />
-                                    POST
-                                </button>
-
-                            </div>
-
-                        </form>
+                            <button
+                                type="button"
+                                className="rounded-xl p-3 text-emerald-500 transition hover:bg-emerald-50"
+                            >
+                                <Smile size={22} />
+                            </button>
 
                     </div>
 
+                    <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+
+                        <button
+                            type="button"
+                            onClick={closePostModal}
+                            className="rounded-xl border border-slate-200 px-6 py-3 font-bold text-slate-600"
+                        >
+                            CANCEL
+                        </button>
+
+                        <button
+                            type="submit"
+                            className="flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-6 py-3 font-bold text-white transition hover:bg-emerald-600"
+                        >
+                            <Send size={18} />
+                            POST
+                        </button>
+
+                    </div>
+
+                </form>
+
+                    </div>  
+
                 </div >
             )
-            }
+}
 
         </main >
     );

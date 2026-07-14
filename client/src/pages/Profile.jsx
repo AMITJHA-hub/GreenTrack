@@ -100,7 +100,8 @@ function Profile() {
                             type="file"
                             ref={avatarInputRef}
                             onChange={handleAvatarChange}
-                            accept="image}
+                            accept="image/*"
+                        />
                         <div 
                             onClick={() => avatarInputRef.current && avatarInputRef.current.click()}
                             className="group relative -mt-28 flex h-44 w-44 cursor-pointer items-center justify-center overflow-hidden rounded-[2.75rem] border-4 border-white bg-slate-950 text-4xl text-white shadow-2xl transition-transform hover:scale-105"
